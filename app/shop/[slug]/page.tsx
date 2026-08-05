@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import ProductInfo from "@/components/shop/ProductInfo";
 import { products } from "@/data/products";
+import ProductGallery from "@/components/shop/ProductGallery";
 
 type ProductPageProps = {
   params: Promise<{
@@ -26,16 +26,10 @@ export default async function ProductPage({
     <main className="min-h-screen bg-white px-6 pb-20 pt-32">
       <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-2 md:gap-16">
 
-        <div className="relative aspect-[3/4] overflow-hidden bg-[#f5f5f5]">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            priority
-            className="object-contain p-8 md:p-12"
-          />
-        </div>
-
+        <ProductGallery
+  images={product.images}
+  name={product.name}
+/>
         <ProductInfo product={product} />
 
       </div>

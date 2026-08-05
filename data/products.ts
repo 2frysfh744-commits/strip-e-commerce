@@ -8,6 +8,9 @@ export const products: Product[] = [
     price: 249,
     description: "Minimal oversized half-zip sweater.",
     image: "/products/black without background.png",
+    images: [
+      "/products/black without background.png",
+    ],
     category: "Sweaters",
     sizes: ["S", "M", "L", "XL"],
     featured: true,
@@ -21,6 +24,9 @@ export const products: Product[] = [
     price: 249,
     description: "Relaxed fit brown half-zip sweater.",
     image: "/products/brown without background.png",
+    images: [
+      "/products/brown without background.png",
+    ],
     category: "Sweaters",
     sizes: ["S", "M", "L", "XL"],
     featured: true,
@@ -34,6 +40,9 @@ export const products: Product[] = [
     price: 299,
     description: "Wide-leg beige cargo pants.",
     image: "/products/cargo without background.png",
+    images: [
+      "/products/cargo without background.png",
+    ],
     category: "Pants",
     sizes: ["38", "40", "42", "44"],
     featured: true,
@@ -47,6 +56,9 @@ export const products: Product[] = [
     price: 329,
     description: "Classic straight-fit dark blue jeans.",
     image: "/products/dark blue jean without background.png",
+    images: [
+      "/products/dark blue jean without background.png",
+    ],
     category: "Jeans",
     sizes: ["38", "40", "42", "44"],
     featured: false,
