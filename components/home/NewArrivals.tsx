@@ -1,40 +1,50 @@
+import Link from "next/link";
+import { products } from "@/data/products";
 import ProductCard from "@/components/shop/ProductCard";
-
-const products = [
-  {
-    name: "black sweater",
-    price: 24,
-    image: "/products/black without background.png",
-  },
-  {
-    name: "brown sweater",
-    price: 55,
-    image: "/products/brown without background.png",
-  },
-  {
-    name: "beige Cargo Pants",
-    price: 49,
-    image: "/products/cargo without background.png",
-  },
-  {
-    name: "dark blue jean",
-    price: 32,
-    image: "/products/dark blue jean without background.png",
-  },
-];
 
 export default function NewArrivals() {
   return (
-    <section className="bg-black text-white py-24 px-10">
-      <h2 className="text-3xl tracking-[0.2em] uppercase mb-12">
-        New Arrivals
-      </h2>
+    <section className="max-w-7xl mx-auto px-6 py-28">
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-        {products.map((product) => (
-          <ProductCard key={product.name} {...product} />
+      <div className="flex items-end justify-between mb-14">
+
+        <div>
+          <p className="uppercase tracking-[0.35em] text-xs text-neutral-500">
+            Latest Drop
+          </p>
+
+          <h2 className="mt-3 text-4xl md:text-5xl font-light tracking-[0.15em]">
+            NEW ARRIVALS
+          </h2>
+        </div>
+
+        <Link
+          href="/shop"
+          className="hidden md:block uppercase tracking-[0.2em] text-sm border-b border-black hover:opacity-60 transition"
+        >
+          View All
+        </Link>
+
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        {products.slice(0, 4).map((product) => (
+          <ProductCard
+            key={product.id}
+            {...product}
+          />
         ))}
       </div>
+
+      <div className="flex justify-center mt-14 md:hidden">
+        <Link
+          href="/shop"
+          className="uppercase tracking-[0.2em] border-b border-black"
+        >
+          View All
+        </Link>
+      </div>
+
     </section>
   );
 }

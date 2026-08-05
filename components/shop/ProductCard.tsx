@@ -1,36 +1,37 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Product } from "@/types/product";
 
-type ProductCardProps = {
-  name: string;
-  price: number;
-  image: string;
-};
+type ProductCardProps = Product;
 
 export default function ProductCard({
+  slug,
   name,
   price,
   image,
 }: ProductCardProps) {
   return (
-  <div className="group cursor-pointer">
-      <div className="relative overflow-hidden bg-[transition-all duration-500] aspect-[3/4]">
+    <Link href={`/shop/${slug}`} className="group block cursor-pointer">
+
+      <div className="relative aspect-[3/4] overflow-hidden bg-[#f5f5f5]">
         <Image
           src={image}
           alt={name}
           fill
-          className="object-cover transition duration-500 group-hover:scale-105"
+          className="object-cover transition duration-700 group-hover:scale-105"
         />
       </div>
 
-      <div className="mt-4 flex justify-between items-center">
-        <h3 className="text-sm tracking-wide uppercase">
+      <div className="mt-5">
+        <h3 className="uppercase tracking-[0.12em] text-sm">
           {name}
         </h3>
 
-        <span className="text-sm text-gray-600">
-          ${price}
-        </span>
+        <p className="mt-2 text-neutral-500 text-sm">
+          {price} MAD
+        </p>
       </div>
-    </div>
+
+    </Link>
   );
 }
