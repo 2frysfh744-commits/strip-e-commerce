@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useMemo } from "react";
-
 import { useCart } from "@/store/cart";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
   const items = useCart((state) => state.items);
-
+const clearCart = useCart((state) => state.clearCart);
+const router = useRouter();
   const subtotal = useMemo(
     () =>
       items.reduce(
@@ -22,11 +23,11 @@ export default function CheckoutPage() {
   const total = subtotal + deliveryFee;
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  event.preventDefault();
 
-    alert("Order placement will be connected in the next step.");
-  }
-
+  clearCart();
+  router.replace("/order-confirmation");
+}
   if (items.length === 0) {
     return (
       <main className="flex flex-1 items-center justify-center px-6 py-24">
