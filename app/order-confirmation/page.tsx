@@ -1,7 +1,26 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
 
-export default function OrderConfirmationPage() {
+type OrderConfirmationPageProps = {
+  searchParams: Promise<{
+    orderId?: string | string[];
+  }>;
+};
+
+export default async function OrderConfirmationPage({
+  searchParams,
+}: OrderConfirmationPageProps) {
+  const { orderId } = await searchParams;
+
+  const rawOrderId = Array.isArray(orderId)
+    ? orderId[0]
+    : orderId;
+
+  const orderNumber =
+    rawOrderId && /^\d+$/.test(rawOrderId)
+      ? rawOrderId
+      : null;
+
   return (
     <main className="flex flex-1 items-center justify-center px-5 py-20">
       <div className="w-full max-w-xl text-center">
@@ -22,7 +41,23 @@ export default function OrderConfirmationPage() {
           will contact you to confirm the delivery.
         </p>
 
-        <div className="mt-8 border border-neutral-200 p-5 text-sm text-neutral-600">
+        {orderNumber && (
+          <div className="mt-8 border border-neutral-200 p-5">
+            <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">
+              Order number
+            </p>
+
+            <p className="mt-2 text-2xl font-semibold">
+              #{orderNumber}
+            </p>
+
+            <p className="mt-2 text-sm text-neutral-500">
+              Save this number for future reference.
+            </p>
+          </div>
+        )}
+
+        <div className="mt-5 border border-neutral-200 p-5 text-sm text-neutral-600">
           Payment will be collected when your order arrives.
         </div>
 
