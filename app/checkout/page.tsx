@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useMemo } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { useCart } from "@/store/cart";
 import { useRouter } from "next/navigation";
 
@@ -10,6 +10,8 @@ export default function CheckoutPage() {
   const items = useCart((state) => state.items);
 const clearCart = useCart((state) => state.clearCart);
 const router = useRouter();
+const [isSubmitting, setIsSubmitting] = useState(false);
+const [submitError, setSubmitError] = useState("");
   const subtotal = useMemo(
     () =>
       items.reduce(
@@ -22,32 +24,67 @@ const router = useRouter();
   const deliveryFee = subtotal >= 500 ? 0 : 30;
   const total = subtotal + deliveryFee;
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
   event.preventDefault();
 
-  clearCart();
-  router.replace("/order-confirmation");
-}
-  if (items.length === 0) {
-    return (
-      <main className="flex flex-1 items-center justify-center px-6 py-24">
-        <div className="text-center">
-          <h1 className="text-3xl font-semibold">Your cart is empty</h1>
+  const form = event.currentTarget;
+  const formData = new FormData(form);
 
-          <p className="mt-3 text-neutral-600">
-            Add a product before continuing to checkout.
-          </p>
+  const getValue = (name: string) =>
+    String(formData.get(name) ?? "").trim();
 
-          <Link
-            href="/shop"
-            className="mt-8 inline-block bg-black px-8 py-3 text-sm font-medium text-white"
-          >
-            Continue shopping
-          </Link>
-        </div>
-      </main>
+  setIsSubmitting(true);
+  setSubmitError("");
+
+  try {
+    const response = await fetch("/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullName: getValue("fullName"),
+        phone: getValue("phone"),
+        email: getValue("email"),
+        city: getValue("city"),
+        postalCode: getValue("postalCode"),
+        address: getValue("address"),
+        deliveryInstructions: getValue("instructions"),
+
+        items: items.map((item) => ({
+          id: item.id,
+          selectedSize: item.selectedSize,
+          quantity: item.quantity,
+        })),
+      }),
+    });
+
+    const result: {
+      error?: string;
+      orderId?: number;
+    } = await response.json();
+
+    if (!response.ok || !result.orderId) {
+      throw new Error(
+        result.error ?? "Your order could not be placed."
+      );
+    }
+
+    clearCart();
+
+    router.replace(
+      `/order-confirmation?orderId=${result.orderId}`
     );
+  } catch (error) {
+    setSubmitError(
+      error instanceof Error
+        ? error.message
+        : "An unexpected error occurred."
+    );
+  } finally {
+    setIsSubmitting(false);
   }
+}
 
   return (
     <main className="mx-auto w-full max-w-7xl px-5 py-10 md:px-8 md:py-16">
@@ -257,12 +294,22 @@ const router = useRouter();
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="mt-6 w-full bg-black px-6 py-4 text-sm font-medium uppercase tracking-wider text-white transition hover:bg-neutral-800"
-            >
-              Place order
-            </button>
+            {submitError && (
+  <p
+    role="alert"
+    className="mt-6 border border-red-300 bg-red-50 p-3 text-sm text-red-700"
+  >
+    {submitError}
+  </p>
+)}
+
+<button
+  type="submit"
+  disabled={isSubmitting}
+  className="mt-6 w-full bg-black px-6 py-4 text-sm font-medium uppercase tracking-wider text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
+>
+  {isSubmitting ? "Placing order..." : "Place order"}
+</button>
 
             <p className="mt-4 text-center text-xs text-neutral-500">
               Free delivery on orders of 500 MAD or more.
