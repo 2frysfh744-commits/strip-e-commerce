@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import Image from "next/image";
 import { X, Trash2 } from "lucide-react";
 
@@ -121,12 +121,13 @@ export default function CartDrawer({
                 </span>
               </div>
 
-              <button
-                type="button"
-                className="mt-6 w-full bg-black px-6 py-4 text-sm uppercase tracking-[0.25em] text-white transition hover:bg-neutral-800"
-              >
-                Checkout
-              </button>
+              <Link
+  href="/checkout"
+  onClick={onClose}
+  className="mt-6 block w-full bg-black px-6 py-4 text-center text-sm uppercase tracking-[0.25em] text-white transition hover:bg-neutral-800"
+>
+  Checkout
+</Link>
             </div>
           </>
         )}
