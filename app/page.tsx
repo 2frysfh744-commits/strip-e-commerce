@@ -1,15 +1,13 @@
-import Navbar from "@/components/layout/Navbar";
+import Categories from "@/components/home/Categories";
 import Hero from "@/components/home/Hero";
 import NewArrivals from "@/components/home/NewArrivals";
-import Categories from "@/components/home/Categories";
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
+    <main>
       <Hero />
       <Categories />
       <NewArrivals />
-    </>
+    </main>
   );
 }

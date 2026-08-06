@@ -8,6 +8,10 @@ type ProductGalleryProps = {
   name: string;
 };
 
+function isModelImage(image: string) {
+  return image.includes("/products/model/");
+}
+
 export default function ProductGallery({
   images,
   name,
@@ -22,7 +26,11 @@ export default function ProductGallery({
           alt={name}
           fill
           priority
-          className="object-contain p-8 md:p-12"
+          className={
+            isModelImage(selectedImage)
+              ? "object-cover"
+              : "object-contain p-8 md:p-12"
+          }
         />
       </div>
 
@@ -43,7 +51,11 @@ export default function ProductGallery({
                 src={image}
                 alt={`${name} preview`}
                 fill
-                className="object-contain p-2"
+                className={
+                  isModelImage(image)
+                    ? "object-cover"
+                    : "object-contain p-2"
+                }
               />
             </button>
           ))}

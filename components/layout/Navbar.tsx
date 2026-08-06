@@ -1,71 +1,78 @@
 "use client";
 
-import { useState } from "react";
+import { Menu, Search, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
-import { Search, ShoppingBag, User } from "lucide-react";
+import { useState } from "react";
 
-import CartDrawer from "@/components/ui/CartDrawer";
 import { useCart } from "@/store/cart";
+import CartDrawer from "@/components/ui/CartDrawer";
+import MobileMenu from "@/components/ui/MobileMenu";
+import SearchOverlay from "@/components/ui/SearchOverlay";
 
 export default function Navbar() {
   const items = useCart((state) => state.items);
   const [cartOpen, setCartOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  function openSearchFromMenu() {
+    setMobileMenuOpen(false);
+    setSearchOpen(true);
+  }
+
+  function openCartFromMenu() {
+    setMobileMenuOpen(false);
+    setCartOpen(true);
+  }
 
   return (
     <>
-      <header className="fixed top-0 left-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-6">
-          {/* Left */}
-          <nav className="hidden gap-8 text-sm font-medium uppercase tracking-[0.2em] text-black md:flex">
-            <Link
-              href="/"
-              className="transition-colors duration-300 hover:text-gray-500"
-            >
+      <header className="fixed left-0 top-0 z-50 w-full border-b border-neutral-200 bg-white/95 text-neutral-950 backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-8 md:py-6">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className="flex h-9 w-9 items-center justify-center md:hidden"
+            aria-label="Open menu"
+          >
+            <Menu size={22} />
+          </button>
+
+          <nav className="hidden gap-8 text-sm font-semibold uppercase tracking-[0.2em] md:flex">
+            <Link href="/" className="transition hover:text-neutral-600">
               Home
             </Link>
-
-            <Link
-              href="/shop"
-              className="transition-colors duration-300 hover:text-gray-500"
-            >
+            <Link href="/shop" className="transition hover:text-neutral-600">
               Shop
             </Link>
-
-            <Link
-              href="/new"
-              className="transition-colors duration-300 hover:text-gray-500"
-            >
+            <Link href="/new" className="transition hover:text-neutral-600">
               New
             </Link>
-
-            <Link
-              href="/about"
-              className="transition-colors duration-300 hover:text-gray-500"
-            >
+            <Link href="/about" className="transition hover:text-neutral-600">
               About
             </Link>
           </nav>
 
-          {/* Logo */}
           <Link
             href="/"
-            className="absolute left-1/2 -translate-x-1/2 text-5xl font-semibold tracking-[0.35em] text-black md:text-6xl"
+            className="font-display absolute left-1/2 -translate-x-1/2 text-4xl font-semibold tracking-[0.24em] md:text-6xl md:tracking-[0.28em]"
           >
             STRIP
           </Link>
 
-          {/* Right */}
-          <div className="flex items-center gap-6 text-black">
-            <Search
-              size={20}
-              className="cursor-pointer transition-colors duration-300 hover:text-gray-500"
-            />
-
+          <div className="ml-auto flex items-center gap-5 md:gap-6">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="cursor-pointer transition hover:text-neutral-600"
+              aria-label="Search products"
+            >
+              <Search size={20} />
+            </button>
             <User
               size={20}
-              className="cursor-pointer transition-colors duration-300 hover:text-gray-500"
+              className="hidden cursor-pointer transition hover:text-neutral-600 sm:block"
             />
-
             <button
               type="button"
               onClick={() => setCartOpen(true)}
@@ -74,9 +81,8 @@ export default function Navbar() {
             >
               <ShoppingBag
                 size={20}
-                className="transition-colors duration-300 hover:text-gray-500"
+                className="transition hover:text-neutral-600"
               />
-
               {items.length > 0 && (
                 <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-black text-[10px] text-white">
                   {items.length}
@@ -87,9 +93,14 @@ export default function Navbar() {
         </div>
       </header>
 
-      <CartDrawer
-        open={cartOpen}
-        onClose={() => setCartOpen(false)}
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <MobileMenu
+        open={mobileMenuOpen}
+        cartCount={items.length}
+        onClose={() => setMobileMenuOpen(false)}
+        onOpenSearch={openSearchFromMenu}
+        onOpenCart={openCartFromMenu}
       />
     </>
   );
