@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import LogoutButton from "@/components/admin/LogoutButton";
+import OrderStatusSelect from "@/components/admin/OrderStatusSelect";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +32,12 @@ type Order = {
   subtotal: number;
   delivery_fee: number;
   total: number;
-  status: string;
+  status:
+  | "pending"
+  | "confirmed"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
   created_at: string;
 };
 
@@ -168,19 +174,24 @@ export default async function AdminOrdersPage() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`rounded-full px-4 py-2 text-xs font-medium uppercase tracking-wider ${getStatusClasses(
-                        order.status
-                      )}`}
-                    >
-                      {order.status}
-                    </span>
+                  <div className="flex flex-wrap items-center gap-4">
+  <span
+    className={`rounded-full px-4 py-2 text-xs font-medium uppercase tracking-wider ${getStatusClasses(
+      order.status
+    )}`}
+  >
+    {order.status}
+  </span>
 
-                    <span className="text-xl font-semibold">
-                      {order.total} MAD
-                    </span>
-                  </div>
+  <OrderStatusSelect
+    orderId={order.id}
+    currentStatus={order.status}
+  />
+
+  <span className="text-xl font-semibold text-neutral-900">
+    {order.total} MAD
+  </span>
+</div>
                 </header>
 
                 <div className="grid lg:grid-cols-[1fr_340px]">
