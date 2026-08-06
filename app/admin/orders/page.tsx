@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import LogoutButton from "@/components/admin/LogoutButton";
 
 export const dynamic = "force-dynamic";
 
@@ -123,12 +124,16 @@ export default async function AdminOrdersPage() {
             </p>
           </div>
 
-          <div className="border border-neutral-200 bg-white px-5 py-3">
-            <span className="text-sm text-neutral-500">
-              Total orders:
-            </span>{" "}
-            <span className="font-semibold">{orders.length}</span>
-          </div>
+          <div className="flex flex-wrap items-center gap-3">
+  <div className="border border-neutral-200 bg-white px-5 py-3">
+    <span className="text-sm text-neutral-500">
+      Total orders:
+    </span>{" "}
+    <span className="font-semibold">{orders.length}</span>
+  </div>
+
+  <LogoutButton />
+</div>
         </div>
 
         {orders.length === 0 ? (
