@@ -11,7 +11,7 @@ export default function NewArrivalsPage() {
   return (
     <main className="min-h-screen bg-[#f7f4ef] pb-24 pt-36 text-neutral-950">
       <section className="mx-auto max-w-7xl px-6">
-        <div className="max-w-3xl border-b border-neutral-300 pb-12">
+        <div className="motion-fade-up max-w-3xl border-b border-neutral-300 pb-12">
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-neutral-700">
             Latest drop
           </p>
@@ -26,7 +26,7 @@ export default function NewArrivalsPage() {
           </p>
         </div>
 
-        <div className="mt-14 grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-8">
+        <div className="motion-stagger mt-14 grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-8">
           {newProducts.map((product) => (
             <ProductCard key={product.id} {...product} />
           ))}

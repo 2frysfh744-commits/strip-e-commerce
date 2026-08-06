@@ -22,14 +22,15 @@ export default function ProductGallery({
     <div className="space-y-4">
       <div className="relative aspect-[3/4] overflow-hidden bg-[#f5f5f5]">
         <Image
+          key={selectedImage}
           src={selectedImage}
           alt={name}
           fill
           priority
           className={
             isModelImage(selectedImage)
-              ? "object-cover"
-              : "object-contain p-8 md:p-12"
+              ? "motion-fade-in object-cover"
+              : "motion-fade-in object-contain p-8 md:p-12"
           }
         />
       </div>
@@ -41,7 +42,7 @@ export default function ProductGallery({
               key={image}
               type="button"
               onClick={() => setSelectedImage(image)}
-              className={`relative aspect-square overflow-hidden border ${
+              className={`relative aspect-square overflow-hidden border transition duration-300 hover:-translate-y-1 ${
                 selectedImage === image
                   ? "border-black"
                   : "border-neutral-200"

@@ -67,7 +67,7 @@ export default function SearchOverlay({
 
   return (
     <div
-      className="fixed inset-0 z-[70] overflow-y-auto bg-[#f7f4ef]/98 text-neutral-950 backdrop-blur-xl"
+      className="motion-fade-in fixed inset-0 z-[70] overflow-y-auto bg-[#f7f4ef]/98 text-neutral-950 backdrop-blur-xl"
       role="dialog"
       aria-modal="true"
       aria-label="Search products"
@@ -88,7 +88,7 @@ export default function SearchOverlay({
           </button>
         </div>
 
-        <div className="mx-auto mt-16 max-w-4xl md:mt-24">
+        <div className="motion-fade-up mx-auto mt-16 max-w-4xl md:mt-24">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-neutral-700">
             Find your piece
           </p>
@@ -122,7 +122,7 @@ export default function SearchOverlay({
                     key={product.id}
                     href={`/shop/${product.slug}`}
                     onClick={closeSearch}
-                    className="group grid grid-cols-[88px_1fr_auto] items-center gap-5 py-5 md:grid-cols-[112px_1fr_auto] md:gap-8"
+                    className="group grid grid-cols-[88px_1fr_auto] items-center gap-5 py-5 transition-transform duration-300 ease-out hover:translate-x-1 md:grid-cols-[112px_1fr_auto] md:gap-8"
                   >
                     <div className="relative aspect-[3/4] overflow-hidden bg-white">
                       <Image

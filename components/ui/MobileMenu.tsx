@@ -54,7 +54,7 @@ export default function MobileMenu({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex flex-col bg-[#171717] text-white md:hidden"
+      className="motion-fade-in fixed inset-0 z-[60] flex flex-col bg-[#171717] text-white md:hidden"
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation"
@@ -84,7 +84,8 @@ export default function MobileMenu({
             key={link.href}
             href={link.href}
             onClick={onClose}
-            className="group flex items-baseline justify-between border-b border-white/20 py-4"
+            className="motion-menu-item group flex items-baseline justify-between border-b border-white/20 py-4"
+            style={{ animationDelay: `${100 + index * 70}ms` }}
           >
             <span className="font-display text-5xl font-medium transition group-hover:translate-x-2 sm:text-6xl">
               {link.label}

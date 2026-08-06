@@ -28,7 +28,7 @@ export default function AboutPage() {
     <main className="bg-white pt-24 text-neutral-950">
       <section className="grid min-h-[82vh] lg:grid-cols-2">
         <div className="flex items-center bg-[#eee9e1] px-8 py-20 md:px-16 lg:px-20">
-          <div className="max-w-xl">
+          <div className="motion-fade-up max-w-xl">
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-neutral-700">
               About STRIP
             </p>
@@ -58,13 +58,13 @@ export default function AboutPage() {
             alt="STRIP relaxed everyday styling"
             fill
             priority
-            className="object-cover object-top"
+          className="motion-hero object-cover object-top"
           />
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-24 md:py-32">
-        <div className="grid gap-12 border-t border-neutral-300 pt-12 md:grid-cols-3">
+        <div className="motion-stagger grid gap-12 border-t border-neutral-300 pt-12 md:grid-cols-3">
           {values.map((value) => (
             <article key={value.number}>
               <p className="text-xs font-semibold tracking-[0.25em] text-neutral-600">
