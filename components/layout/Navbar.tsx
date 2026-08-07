@@ -69,10 +69,15 @@ export default function Navbar() {
             >
               <Search size={20} />
             </button>
-            <User
-              size={20}
-              className="hidden cursor-pointer transition hover:text-neutral-600 sm:block"
-            />
+
+            <Link
+              href="/account"
+              aria-label="Customer account"
+              className="hidden transition hover:text-neutral-600 sm:block"
+            >
+              <User size={20} />
+            </Link>
+
             <button
               type="button"
               onClick={() => setCartOpen(true)}

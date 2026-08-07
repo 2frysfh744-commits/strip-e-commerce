@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { products } from "@/data/products";
+import { getAuthenticatedCustomerId } from "@/lib/customerAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 type RequestedItem = {
@@ -73,8 +74,7 @@ export async function POST(request: Request) {
 
     for (const requestedItem of order.items) {
       const product = products.find(
-        (currentProduct) =>
-          currentProduct.id === requestedItem.id
+        (currentProduct) => currentProduct.id === requestedItem.id
       );
 
       if (!product) {
@@ -114,18 +114,21 @@ export async function POST(request: Request) {
       ? order.postalCode.trim()
       : null;
 
-    const deliveryInstructions = isNonEmptyString(
-      order.deliveryInstructions
-    )
+    const deliveryInstructions = isNonEmptyString(order.deliveryInstructions)
       ? order.deliveryInstructions.trim()
       : null;
+
+    // A valid signed-in session attaches the order to that customer. If there
+    // is no session, checkout remains a normal guest checkout.
+    const customerId = await getAuthenticatedCustomerId();
 
     const { data, error } = await supabaseAdmin
       .from("orders")
       .insert({
+        user_id: customerId,
         full_name: order.fullName.trim(),
         phone: order.phone.trim(),
-        email: order.email.trim(),
+        email: order.email.trim().toLowerCase(),
         city: order.city.trim(),
         postal_code: postalCode,
         address: order.address.trim(),

@@ -9,6 +9,7 @@ const links = [
   { href: "/shop", label: "Shop" },
   { href: "/new", label: "New arrivals" },
   { href: "/about", label: "About" },
+  { href: "/account", label: "My account" },
 ];
 
 type MobileMenuProps = {
@@ -78,16 +79,16 @@ export default function MobileMenu({
         </button>
       </div>
 
-      <nav className="flex flex-1 flex-col justify-center px-8 py-12">
+      <nav className="flex flex-1 flex-col justify-center px-8 py-8">
         {links.map((link, index) => (
           <Link
             key={link.href}
             href={link.href}
             onClick={onClose}
-            className="motion-menu-item group flex items-baseline justify-between border-b border-white/20 py-4"
+            className="motion-menu-item group flex items-baseline justify-between border-b border-white/20 py-3"
             style={{ animationDelay: `${100 + index * 70}ms` }}
           >
-            <span className="font-display text-5xl font-medium transition group-hover:translate-x-2 sm:text-6xl">
+            <span className="font-display text-4xl font-medium transition group-hover:translate-x-2 sm:text-5xl">
               {link.label}
             </span>
             <span className="text-xs tracking-[0.2em] text-white/60">
