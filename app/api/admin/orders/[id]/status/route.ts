@@ -28,13 +28,8 @@ type RouteContext = {
 
 export async function PATCH(request: Request, context: RouteContext) {
   try {
-    const isAuthenticated = await isAdminAuthenticated();
-
-    if (!isAuthenticated) {
-      return NextResponse.json(
-        { error: "Unauthorized." },
-        { status: 401 }
-      );
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
     }
 
     const { id } = await context.params;
@@ -50,10 +45,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     const body: unknown = await request.json();
 
     if (typeof body !== "object" || body === null) {
-      return NextResponse.json(
-        { error: "Invalid request." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid request." }, { status: 400 });
     }
 
     const { status } = body as { status?: unknown };
@@ -65,36 +57,45 @@ export async function PATCH(request: Request, context: RouteContext) {
       );
     }
 
-    const { data, error } = await supabaseAdmin
-      .from("orders")
-      .update({ status })
-      .eq("id", orderId)
-      .select("id, status")
-      .maybeSingle();
+    const { data, error } = await supabaseAdmin.rpc(
+      "set_order_status_with_inventory",
+      {
+        p_order_id: orderId,
+        p_new_status: status,
+      }
+    );
 
     if (error) {
-      console.error("Unable to update order status:", error);
+      if (error.message === "ORDER_NOT_FOUND") {
+        return NextResponse.json({ error: "Order not found." }, { status: 404 });
+      }
 
+      if (error.message === "CANCELLED_ORDER_CANNOT_BE_REOPENED") {
+        return NextResponse.json(
+          {
+            error:
+              "A cancelled order cannot be reopened because its stock was returned. Create a new order instead.",
+          },
+          { status: 409 }
+        );
+      }
+
+      console.error("Unable to update order status and inventory:", error);
       return NextResponse.json(
         { error: "Unable to update the order." },
         { status: 500 }
       );
     }
 
-    if (!data) {
-      return NextResponse.json(
-        { error: "Order not found." },
-        { status: 404 }
-      );
-    }
-
     return NextResponse.json({
-      message: "Order status updated.",
+      message:
+        status === "cancelled"
+          ? "Order cancelled and stock returned."
+          : "Order status updated.",
       order: data,
     });
   } catch (error) {
     console.error("Order status route error:", error);
-
     return NextResponse.json(
       { error: "An unexpected error occurred." },
       { status: 500 }

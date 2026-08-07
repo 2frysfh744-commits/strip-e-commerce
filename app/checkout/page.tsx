@@ -5,6 +5,7 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useCart } from "@/store/cart";
+import { isRemoteProductImage } from "@/types/product";
 
 type CheckoutProfile = {
   fullName: string;
@@ -315,6 +316,7 @@ export default function CheckoutPage() {
                       src={item.image}
                       alt={item.name}
                       fill
+                      unoptimized={isRemoteProductImage(item.image)}
                       className="object-contain p-2"
                     />
                   </div>

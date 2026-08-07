@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useCart } from "@/store/cart";
+import { isRemoteProductImage } from "@/types/product";
 
 type CartDrawerProps = {
   open: boolean;
@@ -68,6 +69,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                       src={item.image}
                       alt={item.name}
                       fill
+                      unoptimized={isRemoteProductImage(item.image)}
                       className="object-contain p-2 transition duration-500 hover:scale-105"
                     />
                   </div>

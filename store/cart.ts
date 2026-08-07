@@ -1,10 +1,7 @@
 import { create } from "zustand";
-import {
-  createJSONStorage,
-  persist,
-} from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
-import { Product } from "@/types/product";
+import { getAvailableStock, type Product } from "@/types/product";
 
 export type CartItem = Product & {
   quantity: number;
@@ -13,15 +10,8 @@ export type CartItem = Product & {
 
 type CartStore = {
   items: CartItem[];
-
-  addItem: (
-    product: Product,
-    size: string,
-    quantity: number
-  ) => void;
-
+  addItem: (product: Product, size: string, quantity: number) => void;
   removeItem: (id: number, size: string) => void;
-
   clearCart: () => void;
 };
 
@@ -32,21 +22,31 @@ export const useCart = create<CartStore>()(
 
       addItem: (product, size, quantity) =>
         set((state) => {
+          const availableStock = Math.min(10, getAvailableStock(product, size));
+
+          if (availableStock < 1) {
+            return state;
+          }
+
+          const safeQuantity = Math.min(
+            availableStock,
+            Math.max(1, Math.floor(quantity))
+          );
           const existingItem = state.items.find(
-            (item) =>
-              item.id === product.id &&
-              item.selectedSize === size
+            (item) => item.id === product.id && item.selectedSize === size
           );
 
           if (existingItem) {
             return {
               items: state.items.map((item) =>
-                item.id === product.id &&
-                item.selectedSize === size
+                item.id === product.id && item.selectedSize === size
                   ? {
                       ...item,
-                      quantity:
-                        item.quantity + quantity,
+                      ...product,
+                      quantity: Math.min(
+                        availableStock,
+                        item.quantity + safeQuantity
+                      ),
                     }
                   : item
               ),
@@ -59,7 +59,7 @@ export const useCart = create<CartStore>()(
               {
                 ...product,
                 selectedSize: size,
-                quantity,
+                quantity: safeQuantity,
               },
             ],
           };
@@ -68,25 +68,16 @@ export const useCart = create<CartStore>()(
       removeItem: (id, size) =>
         set((state) => ({
           items: state.items.filter(
-            (item) =>
-              !(
-                item.id === id &&
-                item.selectedSize === size
-              )
+            (item) => !(item.id === id && item.selectedSize === size)
           ),
         })),
 
       clearCart: () => set({ items: [] }),
     }),
-
     {
       name: "strip-cart",
-      storage: createJSONStorage(
-        () => localStorage
-      ),
-      partialize: (state) => ({
-        items: state.items,
-      }),
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ items: state.items }),
       skipHydration: true,
     }
   )

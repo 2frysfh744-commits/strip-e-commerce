@@ -1,10 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import LogoutButton from "@/components/admin/LogoutButton";
 import OrderStatusSelect from "@/components/admin/OrderStatusSelect";
+import { isRemoteProductImage } from "@/types/product";
 
 export const dynamic = "force-dynamic";
 
@@ -131,6 +133,12 @@ export default async function AdminOrdersPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+  <Link
+    href="/admin/products"
+    className="border border-neutral-900 bg-neutral-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-700"
+  >
+    Products & stock
+  </Link>
   <div className="border border-neutral-200 bg-white px-5 py-3">
     <span className="text-sm text-neutral-500">
       Total orders:
@@ -211,6 +219,7 @@ export default async function AdminOrdersPage() {
                               src={item.image}
                               alt={item.name}
                               fill
+                              unoptimized={isRemoteProductImage(item.image)}
                               className="object-contain p-2"
                             />
                           </div>

@@ -5,14 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-import { products } from "@/data/products";
+import {
+  getTotalStock,
+  isRemoteProductImage,
+  type Product,
+} from "@/types/product";
 
 type SearchOverlayProps = {
+  products: Product[];
   open: boolean;
   onClose: () => void;
 };
 
 export default function SearchOverlay({
+  products,
   open,
   onClose,
 }: SearchOverlayProps) {
@@ -24,7 +30,6 @@ export default function SearchOverlay({
     }
 
     const previousOverflow = document.body.style.overflow;
-
     document.body.style.overflow = "hidden";
 
     function handleKeyDown(event: KeyboardEvent) {
@@ -54,7 +59,7 @@ export default function SearchOverlay({
         .toLowerCase()
         .includes(normalizedQuery)
     );
-  }, [query]);
+  }, [products, query]);
 
   function closeSearch() {
     setQuery("");
@@ -117,36 +122,49 @@ export default function SearchOverlay({
 
             {results.length > 0 ? (
               <div className="divide-y divide-neutral-300">
-                {results.map((product) => (
-                  <Link
-                    key={product.id}
-                    href={`/shop/${product.slug}`}
-                    onClick={closeSearch}
-                    className="group grid grid-cols-[88px_1fr_auto] items-center gap-5 py-5 transition-transform duration-300 ease-out hover:translate-x-1 md:grid-cols-[112px_1fr_auto] md:gap-8"
-                  >
-                    <div className="relative aspect-[3/4] overflow-hidden bg-white">
-                      <Image
-                        src={product.image}
-                        alt=""
-                        fill
-                        className="object-contain p-2 transition duration-500 group-hover:scale-105"
-                      />
-                    </div>
+                {results.map((product) => {
+                  const soldOut = getTotalStock(product) === 0;
+                  const remoteImage = isRemoteProductImage(product.image);
 
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-neutral-600">
-                        {product.category}
+                  return (
+                    <Link
+                      key={product.id}
+                      href={`/shop/${product.slug}`}
+                      onClick={closeSearch}
+                      className="group grid grid-cols-[88px_1fr_auto] items-center gap-5 py-5 transition-transform duration-300 ease-out hover:translate-x-1 md:grid-cols-[112px_1fr_auto] md:gap-8"
+                    >
+                      <div className="relative aspect-[3/4] overflow-hidden bg-white">
+                        <Image
+                          src={product.image}
+                          alt=""
+                          fill
+                          unoptimized={remoteImage}
+                          className={`${
+                            remoteImage ? "object-cover" : "object-contain p-2"
+                          } transition duration-500 group-hover:scale-105`}
+                        />
+                      </div>
+
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-neutral-600">
+                          {product.category}
+                        </p>
+                        <h3 className="mt-2 text-xl font-semibold md:text-3xl">
+                          {product.name}
+                        </h3>
+                        {soldOut ? (
+                          <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-red-700">
+                            Sold out
+                          </p>
+                        ) : null}
+                      </div>
+
+                      <p className="whitespace-nowrap text-sm font-semibold md:text-base">
+                        {product.price} MAD
                       </p>
-                      <h3 className="mt-2 text-xl font-semibold md:text-3xl">
-                        {product.name}
-                      </h3>
-                    </div>
-
-                    <p className="whitespace-nowrap text-sm font-semibold md:text-base">
-                      {product.price} MAD
-                    </p>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             ) : (
               <div className="py-16 text-center">

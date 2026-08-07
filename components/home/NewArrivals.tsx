@@ -1,9 +1,14 @@
 import Link from "next/link";
 
 import ProductCard from "@/components/shop/ProductCard";
-import { products } from "@/data/products";
+import { getStoreProducts } from "@/lib/products";
 
-export default function NewArrivals() {
+export default async function NewArrivals() {
+  const products = await getStoreProducts();
+  const newProducts = products
+    .filter((product) => product.newArrival)
+    .slice(0, 4);
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-28">
       <div className="motion-fade-up mb-14 flex items-end justify-between">
@@ -25,11 +30,17 @@ export default function NewArrivals() {
         </Link>
       </div>
 
-      <div className="motion-stagger grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-8">
-        {products.slice(0, 4).map((product) => (
-          <ProductCard key={product.id} {...product} />
-        ))}
-      </div>
+      {newProducts.length > 0 ? (
+        <div className="motion-stagger grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-8">
+          {newProducts.map((product) => (
+            <ProductCard key={product.id} {...product} />
+          ))}
+        </div>
+      ) : (
+        <div className="border border-neutral-200 bg-neutral-50 px-6 py-16 text-center text-sm text-neutral-600">
+          The next collection is being prepared.
+        </div>
+      )}
 
       <div className="mt-14 flex justify-center md:hidden">
         <Link

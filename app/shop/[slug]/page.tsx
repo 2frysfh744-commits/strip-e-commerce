@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
-import ProductInfo from "@/components/shop/ProductInfo";
-import { products } from "@/data/products";
+
 import ProductGallery from "@/components/shop/ProductGallery";
+import ProductInfo from "@/components/shop/ProductInfo";
+import { getProductBySlug } from "@/lib/products";
+
+export const dynamic = "force-dynamic";
 
 type ProductPageProps = {
   params: Promise<{
@@ -9,14 +12,9 @@ type ProductPageProps = {
   }>;
 };
 
-export default async function ProductPage({
-  params,
-}: ProductPageProps) {
+export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-
-  const product = products.find(
-    (item) => item.slug === slug
-  );
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -25,13 +23,8 @@ export default async function ProductPage({
   return (
     <main className="min-h-screen bg-white px-6 pb-20 pt-32">
       <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-2 md:gap-16">
-
-        <ProductGallery
-  images={product.images}
-  name={product.name}
-/>
+        <ProductGallery images={product.images} name={product.name} />
         <ProductInfo product={product} />
-
       </div>
     </main>
   );

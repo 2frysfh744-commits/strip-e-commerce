@@ -8,8 +8,13 @@ import { useCart } from "@/store/cart";
 import CartDrawer from "@/components/ui/CartDrawer";
 import MobileMenu from "@/components/ui/MobileMenu";
 import SearchOverlay from "@/components/ui/SearchOverlay";
+import type { Product } from "@/types/product";
 
-export default function Navbar() {
+type NavbarProps = {
+  products: Product[];
+};
+
+export default function Navbar({ products }: NavbarProps) {
   const items = useCart((state) => state.items);
   const [cartOpen, setCartOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -99,7 +104,11 @@ export default function Navbar() {
       </header>
 
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SearchOverlay
+        products={products}
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+      />
       <MobileMenu
         open={mobileMenuOpen}
         cartCount={items.length}

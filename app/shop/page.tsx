@@ -1,30 +1,35 @@
-import { products } from "@/data/products";
 import ProductCard from "@/components/shop/ProductCard";
+import { getStoreProducts } from "@/lib/products";
 
-export default function ShopPage() {
+export const dynamic = "force-dynamic";
+
+export default async function ShopPage() {
+  const products = await getStoreProducts();
+
   return (
-    <main className="min-h-screen bg-white pt-32 pb-20">
-      <section className="max-w-7xl mx-auto px-6">
-
+    <main className="min-h-screen bg-white pb-20 pt-32">
+      <section className="mx-auto max-w-7xl px-6">
         <div className="mb-16 text-center">
-          <h1 className="text-5xl md:text-6xl font-light tracking-[0.25em]">
+          <h1 className="text-5xl font-light tracking-[0.25em] md:text-6xl">
             SHOP
           </h1>
 
-          <p className="mt-4 text-gray-500 tracking-wide">
+          <p className="mt-4 tracking-wide text-gray-500">
             Discover the latest STRIP collection.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              {...product}
-            />
-          ))}
-        </div>
-
+        {products.length > 0 ? (
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
+            {products.map((product) => (
+              <ProductCard key={product.id} {...product} />
+            ))}
+          </div>
+        ) : (
+          <div className="border border-neutral-200 py-20 text-center text-neutral-600">
+            The collection is being prepared.
+          </div>
+        )}
       </section>
     </main>
   );

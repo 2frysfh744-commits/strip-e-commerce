@@ -4,6 +4,7 @@ import { Cormorant_Garamond, Manrope } from "next/font/google";
 import CartHydration from "@/components/ui/CartHydration";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import { getStoreProducts } from "@/lib/products";
 
 import "./globals.css";
 
@@ -20,6 +21,8 @@ const displayFont = Cormorant_Garamond({
   display: "swap",
 });
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: {
     default: "STRIP",
@@ -29,7 +32,9 @@ export const metadata: Metadata = {
     "Contemporary everyday essentials designed for confident movement.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const products = await getStoreProducts();
+
   return (
     <html
       lang="en"
@@ -37,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         <CartHydration />
-        <Navbar />
+        <Navbar products={products} />
         {children}
         <Footer />
       </body>

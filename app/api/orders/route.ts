@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-import { products } from "@/data/products";
 import { getAuthenticatedCustomerId } from "@/lib/customerAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
@@ -8,6 +7,15 @@ type RequestedItem = {
   id: number;
   selectedSize: string;
   quantity: number;
+};
+
+type ProductRow = {
+  id: number;
+  slug: string;
+  name: string;
+  price: number;
+  image: string;
+  sizes: string[];
 };
 
 function isNonEmptyString(value: unknown): value is string {
@@ -30,6 +38,26 @@ function isRequestedItem(value: unknown): value is RequestedItem {
     item.quantity >= 1 &&
     item.quantity <= 10
   );
+}
+
+function readStockError(error: { message: string; details?: string }) {
+  if (error.message !== "OUT_OF_STOCK") {
+    return null;
+  }
+
+  try {
+    const details = JSON.parse(error.details ?? "{}") as {
+      name?: unknown;
+      size?: unknown;
+    };
+
+    return {
+      name: typeof details.name === "string" ? details.name : "That item",
+      size: typeof details.size === "string" ? details.size : "selected",
+    };
+  } catch {
+    return { name: "That item", size: "selected" };
+  }
 }
 
 export async function POST(request: Request) {
@@ -69,17 +97,37 @@ export async function POST(request: Request) {
       );
     }
 
+    const requestedItems = order.items as RequestedItem[];
+    const productIds = [...new Set(requestedItems.map((item) => item.id))];
+    const { data: productData, error: productError } = await supabaseAdmin
+      .from("products")
+      .select("id, slug, name, price, image, sizes")
+      .in("id", productIds)
+      .eq("active", true);
+
+    if (productError) {
+      console.error("Unable to validate order products:", productError);
+      return NextResponse.json(
+        { error: "The product catalogue is temporarily unavailable." },
+        { status: 503 }
+      );
+    }
+
+    const productMap = new Map(
+      ((productData ?? []) as ProductRow[]).map((product) => [
+        product.id,
+        product,
+      ])
+    );
     const savedItems = [];
     let subtotal = 0;
 
-    for (const requestedItem of order.items) {
-      const product = products.find(
-        (currentProduct) => currentProduct.id === requestedItem.id
-      );
+    for (const requestedItem of requestedItems) {
+      const product = productMap.get(requestedItem.id);
 
       if (!product) {
         return NextResponse.json(
-          { error: "One of the selected products no longer exists." },
+          { error: "One of the selected products is no longer available." },
           { status: 400 }
         );
       }
@@ -92,7 +140,6 @@ export async function POST(request: Request) {
       }
 
       const lineTotal = product.price * requestedItem.quantity;
-
       subtotal += lineTotal;
 
       savedItems.push({
@@ -109,51 +156,52 @@ export async function POST(request: Request) {
 
     const deliveryFee = subtotal >= 500 ? 0 : 30;
     const total = subtotal + deliveryFee;
-
     const postalCode = isNonEmptyString(order.postalCode)
       ? order.postalCode.trim()
       : null;
-
     const deliveryInstructions = isNonEmptyString(order.deliveryInstructions)
       ? order.deliveryInstructions.trim()
       : null;
-
-    // A valid signed-in session attaches the order to that customer. If there
-    // is no session, checkout remains a normal guest checkout.
     const customerId = await getAuthenticatedCustomerId();
 
-    const { data, error } = await supabaseAdmin
-      .from("orders")
-      .insert({
-        user_id: customerId,
-        full_name: order.fullName.trim(),
-        phone: order.phone.trim(),
-        email: order.email.trim().toLowerCase(),
-        city: order.city.trim(),
-        postal_code: postalCode,
-        address: order.address.trim(),
-        delivery_instructions: deliveryInstructions,
-        payment_method: "cash_on_delivery",
-        items: savedItems,
-        subtotal,
-        delivery_fee: deliveryFee,
-        total,
-        status: "pending",
-      })
-      .select("id")
-      .single();
+    const { data: orderId, error: orderError } = await supabaseAdmin.rpc(
+      "create_order_with_inventory",
+      {
+        p_user_id: customerId,
+        p_full_name: order.fullName.trim(),
+        p_phone: order.phone.trim(),
+        p_email: order.email.trim().toLowerCase(),
+        p_city: order.city.trim(),
+        p_postal_code: postalCode,
+        p_address: order.address.trim(),
+        p_delivery_instructions: deliveryInstructions,
+        p_payment_method: "cash_on_delivery",
+        p_items: savedItems,
+        p_subtotal: subtotal,
+        p_delivery_fee: deliveryFee,
+        p_total: total,
+      }
+    );
 
-    if (error) {
-      console.error("Supabase order error:", error);
+    if (orderError) {
+      const stockError = readStockError(orderError);
 
+      if (stockError) {
+        return NextResponse.json(
+          {
+            error: `${stockError.name} in size ${stockError.size} is sold out or no longer has enough stock. Please update your bag.`,
+          },
+          { status: 409 }
+        );
+      }
+
+      console.error("Supabase inventory order error:", orderError);
       return NextResponse.json(
         { error: "The order could not be saved." },
         { status: 500 }
       );
     }
 
-    // Keep the signed-in customer's saved delivery details current after a
-    // successful checkout. A profile update problem must never undo the order.
     if (customerId) {
       const { error: profileError } = await supabaseAdmin
         .from("customer_profiles")
@@ -182,13 +230,12 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         message: "Order created successfully.",
-        orderId: data.id,
+        orderId: Number(orderId),
       },
       { status: 201 }
     );
   } catch (error) {
     console.error("Order route error:", error);
-
     return NextResponse.json(
       { error: "An unexpected error occurred." },
       { status: 500 }
