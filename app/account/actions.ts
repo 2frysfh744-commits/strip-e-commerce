@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { createCustomerClient } from "@/lib/supabase/server";
 
 function readField(formData: FormData, name: string) {
@@ -223,6 +224,89 @@ export async function updatePasswordAction(formData: FormData) {
 
   redirect(
     destination("/account", "message", "Your password has been updated.")
+  );
+}
+
+export async function updateProfileAction(formData: FormData) {
+  const fullName = readField(formData, "fullName");
+  const phone = readField(formData, "phone");
+  const city = readField(formData, "city");
+  const postalCode = readField(formData, "postalCode");
+  const address = readField(formData, "address");
+  const deliveryInstructions = readField(formData, "deliveryInstructions");
+
+  if (fullName.length < 2 || fullName.length > 80) {
+    redirect(destination("/account", "error", "Enter your full name."));
+  }
+
+  if (phone.length < 6 || phone.length > 30) {
+    redirect(destination("/account", "error", "Enter a valid phone number."));
+  }
+
+  if (city.length < 2 || city.length > 80) {
+    redirect(destination("/account", "error", "Enter your delivery city."));
+  }
+
+  if (postalCode.length > 20) {
+    redirect(destination("/account", "error", "The postal code is too long."));
+  }
+
+  if (address.length < 5 || address.length > 250) {
+    redirect(destination("/account", "error", "Enter your delivery address."));
+  }
+
+  if (deliveryInstructions.length > 500) {
+    redirect(
+      destination("/account", "error", "Delivery instructions are too long.")
+    );
+  }
+
+  const supabase = await createCustomerClient();
+  const { data: claimsData, error: claimsError } =
+    await supabase.auth.getClaims();
+  const customerId = claimsData?.claims?.sub;
+
+  if (claimsError || typeof customerId !== "string") {
+    redirect("/account/login");
+  }
+
+  const { error: profileError } = await supabaseAdmin
+    .from("customer_profiles")
+    .upsert(
+      {
+        user_id: customerId,
+        full_name: fullName,
+        phone,
+        city,
+        postal_code: postalCode || null,
+        address,
+        delivery_instructions: deliveryInstructions || null,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "user_id" }
+    );
+
+  if (profileError) {
+    console.error("Unable to save customer profile:", profileError);
+    redirect(
+      destination(
+        "/account",
+        "error",
+        "Your delivery details could not be saved. Please try again."
+      )
+    );
+  }
+
+  const { error: metadataError } = await supabase.auth.updateUser({
+    data: { full_name: fullName },
+  });
+
+  if (metadataError) {
+    console.error("Unable to update customer name:", metadataError);
+  }
+
+  redirect(
+    destination("/account", "message", "Your delivery details are saved.")
   );
 }
 

@@ -152,6 +152,33 @@ export async function POST(request: Request) {
       );
     }
 
+    // Keep the signed-in customer's saved delivery details current after a
+    // successful checkout. A profile update problem must never undo the order.
+    if (customerId) {
+      const { error: profileError } = await supabaseAdmin
+        .from("customer_profiles")
+        .upsert(
+          {
+            user_id: customerId,
+            full_name: order.fullName.trim(),
+            phone: order.phone.trim(),
+            city: order.city.trim(),
+            postal_code: postalCode,
+            address: order.address.trim(),
+            delivery_instructions: deliveryInstructions,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "user_id" }
+        );
+
+      if (profileError) {
+        console.error(
+          "Unable to refresh customer profile from checkout:",
+          profileError
+        );
+      }
+    }
+
     return NextResponse.json(
       {
         message: "Order created successfully.",
