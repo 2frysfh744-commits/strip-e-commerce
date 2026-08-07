@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { useCart } from "@/store/cart";
+import BrandLogo from "@/components/branding/BrandLogo";
 import CartDrawer from "@/components/ui/CartDrawer";
 import MobileMenu from "@/components/ui/MobileMenu";
 import SearchOverlay from "@/components/ui/SearchOverlay";
@@ -60,9 +61,14 @@ export default function Navbar({ products }: NavbarProps) {
 
           <Link
             href="/"
-            className="font-display absolute left-1/2 -translate-x-1/2 text-4xl font-semibold tracking-[0.24em] md:text-6xl md:tracking-[0.28em]"
+            aria-label="STRIP home"
+            className="absolute left-1/2 -translate-x-1/2"
           >
-            STRIP
+            <BrandLogo
+              priority
+              decorative
+              className="h-6 w-36 md:h-10 md:w-64"
+            />
           </Link>
 
           <div className="ml-auto flex items-center gap-5 md:gap-6">

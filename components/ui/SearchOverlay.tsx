@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import BrandLogo from "@/components/branding/BrandLogo";
 import {
   getTotalStock,
   isRemoteProductImage,
@@ -79,9 +80,7 @@ export default function SearchOverlay({
     >
       <div className="mx-auto min-h-full max-w-6xl px-6 py-8 md:px-10 md:py-12">
         <div className="flex items-center justify-between">
-          <p className="font-display text-3xl font-semibold tracking-[0.22em]">
-            STRIP
-          </p>
+          <BrandLogo className="h-7 w-44" />
 
           <button
             type="button"

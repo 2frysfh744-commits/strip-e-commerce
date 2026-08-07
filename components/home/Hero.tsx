@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import BrandLogo from "@/components/branding/BrandLogo";
+
 export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden bg-neutral-950">
@@ -19,8 +21,13 @@ export default function Hero() {
           New Collection 2026
         </p>
 
-        <h1 className="text-6xl font-medium tracking-[0.24em] md:text-8xl md:tracking-[0.3em]">
-          STRIP
+        <h1 aria-label="STRIP">
+          <BrandLogo
+            tone="white"
+            decorative
+            priority
+            className="h-12 w-72 md:h-[4.5rem] md:w-[30rem]"
+          />
         </h1>
 
         <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/90">

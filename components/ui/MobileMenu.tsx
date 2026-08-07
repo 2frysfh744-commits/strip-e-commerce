@@ -4,6 +4,8 @@ import { Search, ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 
+import BrandLogo from "@/components/branding/BrandLogo";
+
 const links = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
@@ -64,9 +66,13 @@ export default function MobileMenu({
         <Link
           href="/"
           onClick={onClose}
-          className="font-display text-4xl font-semibold tracking-[0.28em]"
+          aria-label="STRIP home"
         >
-          STRIP
+          <BrandLogo
+            tone="white"
+            decorative
+            className="h-7 w-44"
+          />
         </Link>
 
         <button

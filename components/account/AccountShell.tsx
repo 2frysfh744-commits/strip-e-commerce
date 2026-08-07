@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import BrandLogo from "@/components/branding/BrandLogo";
+
 type AccountShellProps = {
   eyebrow: string;
   title: string;
@@ -27,9 +29,10 @@ export default function AccountShell({
           </p>
 
           <div className="relative">
-            <p className="font-display text-6xl font-semibold tracking-[0.24em] md:text-7xl">
-              STRIP
-            </p>
+            <BrandLogo
+              tone="white"
+              className="h-10 w-64 md:h-12 md:w-80"
+            />
             <p className="mt-5 max-w-sm text-sm leading-7 text-white/60">
               Save your details, follow every order, and return to your wardrobe
               whenever you like.

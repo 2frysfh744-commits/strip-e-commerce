@@ -5,6 +5,8 @@ import {
   Phone,
 } from "lucide-react";
 
+import BrandLogo from "@/components/branding/BrandLogo";
+
 function InstagramMark() {
   return (
     <svg
@@ -103,9 +105,14 @@ export default function Footer() {
           <div>
             <Link
               href="/"
-              className="inline-block text-4xl font-semibold tracking-[0.32em]"
+              aria-label="STRIP home"
+              className="inline-block"
             >
-              STRIP
+              <BrandLogo
+                tone="white"
+                decorative
+                className="h-7 w-44"
+              />
             </Link>
             <p className="mt-6 max-w-sm text-sm leading-7 text-neutral-400">
               Contemporary essentials built around confident movement,
