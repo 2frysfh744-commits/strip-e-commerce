@@ -52,7 +52,7 @@ const sections = [
     title: "Your choices and rights",
     paragraphs: [
       "In accordance with applicable Moroccan data-protection rules, you may request access to or correction of personal information concerning you, and you may object to certain processing for legitimate reasons. You may also ask us to close your customer account, subject to records we must retain for legal or operational reasons.",
-      "The contact email and postal details for privacy requests will be published before launch. We may need to verify your identity before responding so that information is not disclosed to the wrong person.",
+      "Send privacy requests to yourstripbrand@gmail.com. We may need to verify your identity before responding so that information is not disclosed to the wrong person.",
     ],
   },
   {
@@ -77,7 +77,7 @@ const sections = [
   {
     title: "Contact and updates",
     paragraphs: [
-      "The STRIP privacy contact will be added to the footer before launch. We may update this policy when services or legal requirements change; the date at the top will show the latest version.",
+      "For privacy questions, email yourstripbrand@gmail.com. For general help, use the telephone, WhatsApp, Instagram, TikTok, or email links in the website footer. We may update this policy when services or legal requirements change; the date at the top will show the latest version.",
     ],
   },
 ];

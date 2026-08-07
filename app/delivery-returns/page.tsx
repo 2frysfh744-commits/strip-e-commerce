@@ -79,7 +79,7 @@ const sections = [
   {
     title: "How to contact us",
     paragraphs: [
-      "Instagram, WhatsApp, telephone, and email details will appear in the website footer before the official launch. When contacting us about an order, include the order number and the phone number used at checkout.",
+      "For order help, contact STRIP on WhatsApp or by telephone at 07 86 76 71 57, email yourstripbrand@gmail.com, or message @stripstore.ma on Instagram or TikTok. Include your order number and the phone number used at checkout.",
     ],
   },
 ];

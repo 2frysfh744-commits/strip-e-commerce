@@ -25,6 +25,25 @@ function InstagramMark() {
   );
 }
 
+function TikTokMark() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M14 4v10.2a4.2 4.2 0 1 1-3.2-4.08" />
+      <path d="M14 4c.7 2.4 2.2 3.9 4.5 4.5" />
+    </svg>
+  );
+}
+
 const shopLinks = [
   { label: "Shop all", href: "/shop" },
   { label: "New arrivals", href: "/new" },
@@ -38,10 +57,42 @@ const careLinks = [
 ];
 
 const contactItems = [
-  { label: "Instagram", icon: <InstagramMark /> },
-  { label: "Phone", icon: <Phone aria-hidden="true" size={18} strokeWidth={1.5} /> },
-  { label: "WhatsApp", icon: <MessageCircle aria-hidden="true" size={18} strokeWidth={1.5} /> },
-  { label: "Email", icon: <Mail aria-hidden="true" size={18} strokeWidth={1.5} /> },
+  {
+    label: "Instagram",
+    detail: "@stripstore.ma",
+    href: "https://www.instagram.com/stripstore.ma/",
+    icon: <InstagramMark />,
+    external: true,
+  },
+  {
+    label: "TikTok",
+    detail: "@stripstore.ma",
+    href: "https://www.tiktok.com/@stripstore.ma",
+    icon: <TikTokMark />,
+    external: true,
+  },
+  {
+    label: "WhatsApp",
+    detail: "07 86 76 71 57",
+    href: "https://wa.me/212786767157",
+    icon: <MessageCircle aria-hidden="true" size={18} strokeWidth={1.5} />,
+    external: true,
+  },
+  {
+    label: "Phone",
+    detail: "07 86 76 71 57",
+    href: "tel:+212786767157",
+    icon: <Phone aria-hidden="true" size={18} strokeWidth={1.5} />,
+    external: false,
+  },
+  {
+    label: "Email",
+    detail: "yourstripbrand@gmail.com",
+    href: "mailto:yourstripbrand@gmail.com",
+    icon: <Mail aria-hidden="true" size={18} strokeWidth={1.5} />,
+    external: false,
+    wide: true,
+  },
 ];
 
 export default function Footer() {
@@ -72,7 +123,10 @@ export default function Footer() {
             <ul className="mt-6 space-y-4 text-sm">
               {shopLinks.map((link) => (
                 <li key={link.href}>
-                  <Link className="transition hover:text-neutral-400" href={link.href}>
+                  <Link
+                    className="transition hover:text-neutral-400"
+                    href={link.href}
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -87,7 +141,10 @@ export default function Footer() {
             <ul className="mt-6 space-y-4 text-sm">
               {careLinks.map((link) => (
                 <li key={link.href}>
-                  <Link className="transition hover:text-neutral-400" href={link.href}>
+                  <Link
+                    className="transition hover:text-neutral-400"
+                    href={link.href}
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -100,22 +157,30 @@ export default function Footer() {
               Connect
             </h2>
             <ul className="mt-6 grid grid-cols-2 gap-3">
-              {contactItems.map(({ label, icon }) => (
-                <li
-                  key={label}
-                  aria-label={`${label} details coming soon`}
-                  className="flex min-h-24 flex-col justify-between border border-white/20 p-4 text-neutral-300"
-                >
-                  {icon}
-                  <span className="mt-4 text-xs uppercase tracking-[0.16em]">
-                    {label}
-                  </span>
-                </li>
-              ))}
+              {contactItems.map(
+                ({ label, detail, href, icon, external, wide }) => (
+                  <li key={label} className={wide ? "col-span-2" : ""}>
+                    <a
+                      href={href}
+                      target={external ? "_blank" : undefined}
+                      rel={external ? "noreferrer" : undefined}
+                      aria-label={`${label}: ${detail}`}
+                      className="group flex min-h-28 h-full flex-col justify-between border border-white/20 p-4 text-neutral-300 transition duration-300 hover:-translate-y-1 hover:border-white/60 hover:bg-white hover:text-neutral-950"
+                    >
+                      {icon}
+                      <span className="mt-5">
+                        <span className="block text-xs uppercase tracking-[0.16em]">
+                          {label}
+                        </span>
+                        <span className="mt-1.5 block break-all text-[11px] leading-4 text-neutral-500 transition group-hover:text-neutral-600">
+                          {detail}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                )
+              )}
             </ul>
-            <p className="mt-4 text-xs text-neutral-500">
-              Contact details coming soon.
-            </p>
           </div>
         </div>
 
