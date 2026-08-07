@@ -131,7 +131,10 @@ export default function ScrollLookbook() {
                 {String(activeIndex + 1).padStart(2, "0")} / {activeLook.eyebrow}
               </p>
 
-              <h2 className="mt-5 max-w-xl text-5xl font-medium leading-[0.92] md:text-7xl lg:text-8xl">
+              <h2
+                className="mt-5 max-w-xl text-[5.5rem] font-normal leading-[0.82] tracking-[0.015em] sm:text-[6.5rem] md:text-[8rem] lg:text-[10rem]"
+                style={{ fontFamily: "var(--font-lookbook)" }}
+              >
                 {activeLook.title}
               </h2>
 
