@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 
 import { getAuthenticatedCustomerId } from "@/lib/customerAuth";
+import { sendNewOrderNotification } from "@/lib/orderNotification";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 type RequestedItem = {
@@ -16,6 +17,17 @@ type ProductRow = {
   price: number;
   image: string;
   sizes: string[];
+};
+
+type SavedOrderItem = {
+  product_id: number;
+  slug: string;
+  name: string;
+  image: string;
+  price: number;
+  selected_size: string;
+  quantity: number;
+  line_total: number;
 };
 
 function isNonEmptyString(value: unknown): value is string {
@@ -119,7 +131,7 @@ export async function POST(request: Request) {
         product,
       ])
     );
-    const savedItems = [];
+    const savedItems: SavedOrderItem[] = [];
     let subtotal = 0;
 
     for (const requestedItem of requestedItems) {
@@ -227,10 +239,42 @@ export async function POST(request: Request) {
       }
     }
 
+    const createdOrderId = Number(orderId);
+    const notificationCustomer = {
+      fullName: order.fullName.trim(),
+      phone: order.phone.trim(),
+      email: order.email.trim().toLowerCase(),
+      city: order.city.trim(),
+      address: order.address.trim(),
+    };
+
+    after(async () => {
+      await sendNewOrderNotification({
+        orderId: createdOrderId,
+        fullName: notificationCustomer.fullName,
+        phone: notificationCustomer.phone,
+        email: notificationCustomer.email,
+        city: notificationCustomer.city,
+        postalCode,
+        address: notificationCustomer.address,
+        deliveryInstructions,
+        items: savedItems.map((item) => ({
+          name: item.name,
+          size: item.selected_size,
+          quantity: item.quantity,
+          unitPrice: item.price,
+          lineTotal: item.line_total,
+        })),
+        subtotal,
+        deliveryFee,
+        total,
+      });
+    });
+
     return NextResponse.json(
       {
         message: "Order created successfully.",
-        orderId: Number(orderId),
+        orderId: createdOrderId,
       },
       { status: 201 }
     );
