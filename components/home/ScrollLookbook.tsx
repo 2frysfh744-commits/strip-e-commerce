@@ -6,14 +6,14 @@ import { useEffect, useRef, useState } from "react";
 
 const looks = [
   {
-    image: "/home/black-half-zip-seated.png",
+    image: "/products/model/black-half-zip-cargo.png",
     eyebrow: "The half-zip",
     title: "Structure without stiffness.",
-    description: "A clean layer built for movement, contrast, and effortless repetition.",
-    position: "object-center",
+    description: "A clean layer built for movement, contrast, and easy repetition.",
+    position: "object-top",
   },
   {
-    image: "/home/grey-half-zip-seated.jpg",
+    image: "/products/model/grey-half-zip-dark-jeans-walk.jpg",
     eyebrow: "Wide lines",
     title: "Denim that moves with you.",
     description: "Relaxed proportions create a confident silhouette from every angle.",
@@ -34,11 +34,11 @@ const looks = [
     position: "object-top",
   },
   {
-    image: "/home/black-half-zip-motion.jpg",
+    image: "/products/model/white-tee-cargo.jpg",
     eyebrow: "The essentials",
     title: "Nothing extra. Everything considered.",
-    description: "Simple pieces with enough character to stand alone and wear on repeat.",
-    position: "object-center",
+    description: "Simple pieces with enough character to stand alone or layer naturally.",
+    position: "object-top",
   },
 ];
 
