@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import AccountShell from "@/components/account/AccountShell";
+import PasswordInput from "@/components/account/PasswordInput";
 import SubmitButton from "@/components/account/SubmitButton";
 import { updatePasswordAction } from "@/app/account/actions";
 import { createCustomerClient } from "@/lib/supabase/server";
@@ -46,12 +47,15 @@ export default async function UpdatePasswordPage({
       ) : null}
 
       <form action={updatePasswordAction} className="space-y-5">
-        <label className="block space-y-2">
-          <span className="text-sm font-medium text-neutral-800">
+        <div className="space-y-2">
+          <label
+            htmlFor="new-password"
+            className="block text-sm font-medium text-neutral-800"
+          >
             New password
-          </span>
-          <input
-            type="password"
+          </label>
+          <PasswordInput
+            id="new-password"
             name="password"
             autoComplete="new-password"
             minLength={8}
@@ -59,14 +63,17 @@ export default async function UpdatePasswordPage({
             className={inputClasses}
             placeholder="8+ characters"
           />
-        </label>
+        </div>
 
-        <label className="block space-y-2">
-          <span className="text-sm font-medium text-neutral-800">
+        <div className="space-y-2">
+          <label
+            htmlFor="new-password-confirmation"
+            className="block text-sm font-medium text-neutral-800"
+          >
             Confirm new password
-          </span>
-          <input
-            type="password"
+          </label>
+          <PasswordInput
+            id="new-password-confirmation"
             name="passwordConfirmation"
             autoComplete="new-password"
             minLength={8}
@@ -74,7 +81,7 @@ export default async function UpdatePasswordPage({
             className={inputClasses}
             placeholder="Repeat password"
           />
-        </label>
+        </div>
 
         <div className="pt-2">
           <SubmitButton pendingLabel="Updating password...">

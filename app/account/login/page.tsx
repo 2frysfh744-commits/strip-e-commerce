@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import AccountShell from "@/components/account/AccountShell";
+import PasswordInput from "@/components/account/PasswordInput";
 import SubmitButton from "@/components/account/SubmitButton";
 import { loginAction } from "@/app/account/actions";
 
@@ -73,25 +74,25 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           />
         </label>
 
-        <label className="block space-y-2">
-          <span className="flex items-center justify-between gap-4 text-sm font-medium text-neutral-800">
-            Password
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-4 text-sm font-medium text-neutral-800">
+            <label htmlFor="customer-login-password">Password</label>
             <Link
               href="/account/forgot-password"
               className="text-xs font-normal text-neutral-500 underline underline-offset-4 transition hover:text-neutral-950"
             >
               Forgot password?
             </Link>
-          </span>
-          <input
-            type="password"
+          </div>
+          <PasswordInput
+            id="customer-login-password"
             name="password"
             autoComplete="current-password"
             required
             className={inputClasses}
             placeholder="Your password"
           />
-        </label>
+        </div>
 
         <div className="pt-2">
           <SubmitButton pendingLabel="Signing in...">Sign in</SubmitButton>

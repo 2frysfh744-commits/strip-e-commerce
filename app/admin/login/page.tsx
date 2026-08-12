@@ -4,6 +4,8 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LockKeyhole } from "lucide-react";
 
+import PasswordInput from "@/components/account/PasswordInput";
+
 export default function AdminLoginPage() {
   const router = useRouter();
 
@@ -101,19 +103,22 @@ export default function AdminLoginPage() {
             />
           </label>
 
-          <label className="block space-y-2">
-            <span className="text-sm font-medium">
+          <div className="space-y-2">
+            <label
+              htmlFor="admin-password"
+              className="block text-sm font-medium"
+            >
               Password
-            </span>
+            </label>
 
-            <input
-              type="password"
+            <PasswordInput
+              id="admin-password"
               name="password"
               required
               autoComplete="current-password"
               className="w-full border border-neutral-300 px-4 py-3 outline-none transition focus:border-black"
             />
-          </label>
+          </div>
 
           {error && (
             <p
