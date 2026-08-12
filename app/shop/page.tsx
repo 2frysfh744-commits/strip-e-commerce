@@ -10,7 +10,10 @@ export default async function ShopPage() {
     <main className="min-h-screen bg-white pb-20 pt-32">
       <section className="mx-auto max-w-7xl px-6">
         <div className="mb-16 text-center">
-          <h1 className="text-5xl font-light tracking-[0.25em] md:text-6xl">
+          <h1
+            className="text-8xl font-normal leading-none tracking-[0.16em] md:text-9xl"
+            style={{ fontFamily: "var(--font-lookbook)" }}
+          >
             SHOP
           </h1>
 
