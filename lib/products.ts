@@ -87,7 +87,13 @@ export const getStoreProducts = cache(async (): Promise<Product[]> => {
     .order("id", { ascending: true });
 
   if (error) {
-    console.error("Unable to load database products; using fallback:", error);
+    const logDatabaseFallback =
+      process.env.NODE_ENV === "production" ? console.error : console.warn;
+
+    logDatabaseFallback(
+      "Unable to load database products; using fallback:",
+      error
+    );
     return getStaticFallbackProducts();
   }
 

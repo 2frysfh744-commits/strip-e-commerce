@@ -10,16 +10,16 @@ import {
 
 const frames = [
   {
-    image: "/products/model/black-half-zip-cargo.png",
-    alt: "Black STRIP half-zip with beige cargo pants",
-    label: "The black half-zip",
+    image: "/home/editorial/grey-half-zip-standing.png",
+    alt: "Grey STRIP half-zip with dark denim",
+    label: "Studio grey",
     position: "object-top",
   },
   {
-    image: "/products/model/grey-half-zip-dark-jeans-walk.jpg",
-    alt: "Grey STRIP half-zip with dark denim",
-    label: "Grey in motion",
-    position: "object-center",
+    image: "/home/editorial/brown-half-zip-standing.jpg",
+    alt: "Brown STRIP half-zip with beige cargo pants",
+    label: "Earth tones",
+    position: "object-top",
   },
   {
     image: "/categories/women.jpg",
@@ -28,16 +28,16 @@ const frames = [
     position: "object-center",
   },
   {
-    image: "/products/model/brown-half-zip-light-jeans.jpg",
-    alt: "Brown STRIP half-zip with light denim",
-    label: "Earth tones",
+    image: "/home/editorial/black-half-zip-light-denim.png",
+    alt: "Black STRIP half-zip with light denim",
+    label: "Black and blue",
     position: "object-top",
   },
   {
-    image: "/products/model/white-tee-cargo.jpg",
-    alt: "White STRIP tee with cargo pants",
-    label: "The essentials",
-    position: "object-top",
+    image: "/home/editorial/grey-half-zip-seated.png",
+    alt: "Grey STRIP half-zip with dark denim in a seated pose",
+    label: "Grey in motion",
+    position: "object-center",
   },
 ];
 
