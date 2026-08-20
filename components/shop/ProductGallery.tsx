@@ -22,7 +22,7 @@ export default function ProductGallery({
   const remoteSelectedImage = isRemoteProductImage(selectedImage);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 md:space-y-4">
       <div className="relative aspect-[3/4] overflow-hidden bg-[#f5f5f5]">
         <Image
           key={selectedImage}
@@ -31,10 +31,11 @@ export default function ProductGallery({
           fill
           priority
           unoptimized={remoteSelectedImage}
+          sizes="(max-width: 767px) 100vw, 50vw"
           className={
             isModelImage(selectedImage)
               ? "motion-fade-in object-cover"
-              : "motion-fade-in object-contain p-8 md:p-12"
+              : "motion-fade-in object-contain p-5 sm:p-8 md:p-12"
           }
         />
       </div>
@@ -49,7 +50,7 @@ export default function ProductGallery({
                 key={image}
                 type="button"
                 onClick={() => setSelectedImage(image)}
-                className={`relative aspect-square overflow-hidden border transition duration-300 hover:-translate-y-1 ${
+                className={`relative aspect-square min-h-16 touch-manipulation overflow-hidden border transition duration-300 hover:-translate-y-1 active:scale-95 ${
                   selectedImage === image
                     ? "border-black"
                     : "border-neutral-200"
@@ -60,6 +61,7 @@ export default function ProductGallery({
                   alt={`${name} preview`}
                   fill
                   unoptimized={remoteImage}
+                  sizes="(max-width: 767px) 22vw, 12vw"
                   className={
                     isModelImage(image) ? "object-cover" : "object-contain p-2"
                   }

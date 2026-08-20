@@ -100,9 +100,9 @@ const contactItems = [
 export default function Footer() {
   return (
     <footer className="mt-auto bg-neutral-950 text-white">
-      <div className="mx-auto max-w-7xl px-6 py-16 md:px-8 md:py-20">
-        <div className="grid gap-14 border-b border-white/20 pb-16 lg:grid-cols-[1.35fr_0.65fr_0.65fr_1fr]">
-          <div>
+      <div className="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-20">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 border-b border-white/20 pb-12 md:pb-16 lg:grid-cols-[1.35fr_0.65fr_0.65fr_1fr] lg:gap-14">
+          <div className="col-span-2 lg:col-span-1">
             <Link
               href="/"
               aria-label="STRIP home"
@@ -159,7 +159,7 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <div>
+          <div className="col-span-2 lg:col-span-1">
             <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500">
               Connect
             </h2>
@@ -172,7 +172,7 @@ export default function Footer() {
                       target={external ? "_blank" : undefined}
                       rel={external ? "noreferrer" : undefined}
                       aria-label={`${label}: ${detail}`}
-                      className="group flex min-h-28 h-full flex-col justify-between border border-white/20 p-4 text-neutral-300 transition duration-300 hover:-translate-y-1 hover:border-white/60 hover:bg-white hover:text-neutral-950"
+                      className="group flex h-full min-h-24 flex-col justify-between border border-white/20 p-3.5 text-neutral-300 transition duration-300 hover:-translate-y-1 hover:border-white/60 hover:bg-white hover:text-neutral-950 sm:min-h-28 sm:p-4"
                     >
                       {icon}
                       <span className="mt-5">
@@ -191,7 +191,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 pt-7 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 pt-7 text-xs leading-5 text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} STRIP. All rights reserved.</p>
           <p>Prices are displayed in Moroccan dirhams (MAD).</p>
         </div>

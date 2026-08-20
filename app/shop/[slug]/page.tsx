@@ -21,8 +21,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-white px-6 pb-20 pt-32">
-      <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-2 md:gap-16">
+    <main className="min-h-screen bg-white px-4 pb-16 pt-24 sm:px-6 md:pb-20 md:pt-32">
+      <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 md:gap-16">
         <ProductGallery images={product.images} name={product.name} />
         <ProductInfo product={product} />
       </div>

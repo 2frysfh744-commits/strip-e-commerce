@@ -10,14 +10,14 @@ export default async function NewArrivals() {
     .slice(0, 4);
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-28">
-      <div className="motion-fade-up mb-14 flex items-end justify-between">
+    <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28">
+      <div className="motion-fade-up mb-10 flex items-end justify-between md:mb-14">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-neutral-700">
             Latest Drop
           </p>
 
-          <h2 className="mt-3 text-4xl font-medium tracking-[0.12em] md:text-5xl">
+          <h2 className="mt-3 text-[2.7rem] font-medium leading-none tracking-[0.07em] sm:text-5xl sm:tracking-[0.12em]">
             NEW ARRIVALS
           </h2>
         </div>
@@ -31,7 +31,7 @@ export default async function NewArrivals() {
       </div>
 
       {newProducts.length > 0 ? (
-        <div className="motion-stagger grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-8">
+        <div className="motion-stagger grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-6 lg:grid-cols-4 lg:gap-8">
           {newProducts.map((product) => (
             <ProductCard key={product.id} {...product} />
           ))}
@@ -42,7 +42,7 @@ export default async function NewArrivals() {
         </div>
       )}
 
-      <div className="mt-14 flex justify-center md:hidden">
+      <div className="mt-10 flex justify-center md:hidden">
         <Link
           href="/new"
           className="border-b border-black pb-1 font-semibold uppercase tracking-[0.2em]"

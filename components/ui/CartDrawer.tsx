@@ -33,12 +33,15 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
       )}
 
       <aside
-        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-[420px] flex-col bg-white shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          open ? "translate-x-0" : "translate-x-full"
+        aria-hidden={!open}
+        className={`fixed right-0 top-0 z-50 flex h-[100dvh] w-full max-w-[420px] flex-col bg-white shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          open
+            ? "pointer-events-auto translate-x-0"
+            : "pointer-events-none translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between border-b p-6">
-          <h2 className="text-lg font-semibold uppercase tracking-[0.2em] text-black">
+        <div className="flex items-center justify-between border-b p-4 sm:p-6">
+          <h2 className="text-base font-semibold uppercase tracking-[0.16em] text-black sm:text-lg sm:tracking-[0.2em]">
             Shopping Bag
           </h2>
 
@@ -46,7 +49,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
             type="button"
             onClick={onClose}
             aria-label="Close shopping bag"
-            className="text-black transition duration-300 hover:rotate-90 hover:text-neutral-600"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-black transition duration-300 hover:rotate-90 hover:text-neutral-600 active:bg-neutral-100"
           >
             <X size={24} />
           </button>
@@ -58,7 +61,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
           </div>
         ) : (
           <>
-            <div className="flex-1 space-y-6 overflow-y-auto p-6">
+            <div className="flex-1 space-y-5 overflow-y-auto p-4 sm:space-y-6 sm:p-6">
               {items.map((item) => (
                 <div
                   key={`${item.id}-${item.selectedSize}`}
@@ -70,6 +73,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                       alt={item.name}
                       fill
                       unoptimized={isRemoteProductImage(item.image)}
+                      sizes="96px"
                       className="object-contain p-2 transition duration-500 hover:scale-105"
                     />
                   </div>
@@ -103,7 +107,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
               ))}
             </div>
 
-            <div className="border-t p-6">
+            <div className="border-t p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:p-6">
               <div className="flex items-center justify-between text-black">
                 <span className="font-semibold uppercase tracking-[0.15em]">
                   Subtotal

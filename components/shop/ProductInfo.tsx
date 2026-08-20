@@ -33,17 +33,19 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         {product.category}
       </p>
 
-      <h1 className="mt-4 text-4xl font-light uppercase tracking-[0.12em] text-black md:text-5xl">
+      <h1 className="mt-3 text-3xl font-light uppercase leading-tight tracking-[0.1em] text-black sm:text-4xl md:mt-4 md:text-5xl md:tracking-[0.12em]">
         {product.name}
       </h1>
 
-      <p className="mt-6 text-2xl font-medium text-black">
+      <p className="mt-4 text-xl font-medium text-black sm:text-2xl md:mt-6">
         {product.price} MAD
       </p>
 
-      <p className="mt-8 leading-8 text-neutral-600">{product.description}</p>
+      <p className="mt-5 text-sm leading-7 text-neutral-600 sm:text-base sm:leading-8 md:mt-8">
+        {product.description}
+      </p>
 
-      <div className="mt-10">
+      <div className="mt-8 md:mt-10">
         <div className="mb-4 flex items-center justify-between gap-4">
           <p className="text-sm uppercase tracking-[0.2em]">Size</p>
           {selectedStock > 0 && selectedStock <= 3 ? (
@@ -70,7 +72,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
                   );
                 }}
                 aria-label={`${size}${soldOut ? ", sold out" : ""}`}
-                className={`relative h-12 min-w-12 border px-3 text-sm transition ${
+                className={`relative h-12 min-w-12 touch-manipulation border px-3 text-sm transition active:scale-95 ${
                   selectedSize === size
                     ? "border-black bg-black text-white"
                     : soldOut
@@ -86,7 +88,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       </div>
 
       {totalStock > 0 ? (
-        <div className="mt-10">
+        <div className="mt-8 md:mt-10">
           <p className="mb-4 text-sm uppercase tracking-[0.2em] text-black">
             Quantity
           </p>
@@ -127,7 +129,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         type="button"
         disabled={!selectedSize || selectedStock === 0}
         onClick={() => addItem(product, selectedSize, quantity)}
-        className="mt-12 bg-black py-4 uppercase tracking-[0.25em] text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
+        className="mt-9 min-h-14 touch-manipulation bg-black px-4 py-4 text-sm uppercase tracking-[0.22em] text-white transition hover:bg-neutral-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-neutral-300 md:mt-12 md:tracking-[0.25em]"
       >
         {totalStock === 0 ? "Sold Out" : "Add To Cart"}
       </button>

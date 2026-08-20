@@ -78,9 +78,9 @@ export default function SearchOverlay({
       aria-modal="true"
       aria-label="Search products"
     >
-      <div className="mx-auto min-h-full max-w-6xl px-6 py-8 md:px-10 md:py-12">
+      <div className="mx-auto min-h-full max-w-6xl px-4 py-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:px-6 md:px-10 md:py-12">
         <div className="flex items-center justify-between">
-          <BrandLogo className="h-7 w-44" />
+          <BrandLogo className="h-6 w-36 sm:h-7 sm:w-44" />
 
           <button
             type="button"
@@ -92,26 +92,26 @@ export default function SearchOverlay({
           </button>
         </div>
 
-        <div className="motion-fade-up mx-auto mt-16 max-w-4xl md:mt-24">
+        <div className="motion-fade-up mx-auto mt-10 max-w-4xl sm:mt-16 md:mt-24">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-neutral-700">
             Find your piece
           </p>
 
-          <div className="mt-5 flex items-center gap-4 border-b-2 border-neutral-950 pb-4">
-            <Search size={26} strokeWidth={1.5} aria-hidden="true" />
+          <div className="mt-4 flex items-center gap-3 border-b-2 border-neutral-950 pb-3 sm:mt-5 sm:gap-4 sm:pb-4">
+            <Search size={22} strokeWidth={1.5} aria-hidden="true" />
             <input
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               autoFocus
               placeholder="Search sweaters, jeans, T-shirts..."
-              className="w-full bg-transparent font-display text-3xl font-medium outline-none placeholder:text-neutral-500 md:text-5xl"
+              className="min-w-0 w-full bg-transparent font-display text-2xl font-medium outline-none placeholder:text-neutral-500 sm:text-3xl md:text-5xl"
             />
           </div>
 
-          <div className="mt-10">
+          <div className="mt-8 md:mt-10">
             <div className="flex items-center justify-between border-b border-neutral-300 pb-4">
-              <h2 className="text-2xl font-semibold">
+              <h2 className="text-xl font-semibold sm:text-2xl">
                 {query.trim() ? "Search results" : "New arrivals"}
               </h2>
               <span className="text-sm font-medium text-neutral-700">
@@ -130,25 +130,26 @@ export default function SearchOverlay({
                       key={product.id}
                       href={`/shop/${product.slug}`}
                       onClick={closeSearch}
-                      className="group grid grid-cols-[88px_1fr_auto] items-center gap-5 py-5 transition-transform duration-300 ease-out hover:translate-x-1 md:grid-cols-[112px_1fr_auto] md:gap-8"
+                      className="group grid grid-cols-[72px_minmax(0,1fr)] items-center gap-x-4 gap-y-1 py-4 transition-transform duration-300 ease-out hover:translate-x-1 active:opacity-70 md:grid-cols-[112px_minmax(0,1fr)_auto] md:gap-8 md:py-5"
                     >
-                      <div className="relative aspect-[3/4] overflow-hidden bg-white">
+                      <div className="relative row-span-2 aspect-[3/4] overflow-hidden bg-white md:row-span-1">
                         <Image
                           src={product.image}
                           alt=""
                           fill
                           unoptimized={remoteImage}
+                          sizes="(max-width: 767px) 72px, 112px"
                           className={`${
                             remoteImage ? "object-cover" : "object-contain p-2"
                           } transition duration-500 group-hover:scale-105`}
                         />
                       </div>
 
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-neutral-600">
                           {product.category}
                         </p>
-                        <h3 className="mt-2 text-xl font-semibold md:text-3xl">
+                        <h3 className="mt-1.5 text-lg font-semibold leading-tight sm:text-xl md:mt-2 md:text-3xl">
                           {product.name}
                         </h3>
                         {soldOut ? (
@@ -158,7 +159,7 @@ export default function SearchOverlay({
                         ) : null}
                       </div>
 
-                      <p className="whitespace-nowrap text-sm font-semibold md:text-base">
+                      <p className="col-start-2 row-start-2 whitespace-nowrap text-sm font-semibold md:col-start-3 md:row-start-1 md:text-base">
                         {product.price} MAD
                       </p>
                     </Link>

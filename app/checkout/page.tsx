@@ -158,8 +158,8 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-5 pb-16 pt-32 md:px-8 md:pb-20 md:pt-40">
-      <div className="mb-10">
+    <main className="mx-auto w-full max-w-7xl px-4 pb-14 pt-24 sm:px-5 md:px-8 md:pb-20 md:pt-40">
+      <div className="mb-8 md:mb-10">
         <p className="text-sm uppercase tracking-[0.25em] text-neutral-500">
           STRIP
         </p>
@@ -177,9 +177,9 @@ export default function CheckoutPage() {
       <form
         ref={formRef}
         onSubmit={handleSubmit}
-        className="grid gap-12 lg:grid-cols-[1fr_420px]"
+        className="grid gap-10 lg:grid-cols-[1fr_420px] lg:gap-12"
       >
-        <div className="space-y-12">
+        <div className="space-y-10 md:space-y-12">
           <section>
             <h2 className="border-b border-neutral-200 pb-4 text-xl font-medium">
               Contact information
@@ -302,7 +302,7 @@ export default function CheckoutPage() {
         </div>
 
         <aside>
-          <div className="sticky top-24 border border-neutral-200 p-6">
+          <div className="border border-neutral-200 p-4 sm:p-6 lg:sticky lg:top-24">
             <h2 className="text-xl font-medium">Order summary</h2>
 
             <div className="mt-6 max-h-[420px] space-y-5 overflow-y-auto pr-1">
@@ -317,6 +317,7 @@ export default function CheckoutPage() {
                       alt={item.name}
                       fill
                       unoptimized={isRemoteProductImage(item.image)}
+                      sizes="80px"
                       className="object-contain p-2"
                     />
                   </div>

@@ -79,7 +79,7 @@ function GalleryFrame({
       }}
       onPointerMove={(event) => onPointerMove(event, index)}
       onFocus={() => onActivate(index)}
-      className={`group relative block overflow-hidden bg-neutral-800 outline-none transition-[height,opacity,filter] duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:z-30 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white motion-reduce:transition-none ${className} ${
+      className={`group relative block touch-manipulation overflow-hidden bg-neutral-800 outline-none transition-[height,opacity,filter,transform] duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] active:z-30 active:scale-[0.985] focus-visible:z-30 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white motion-reduce:transition-none ${className} ${
         isInactive ? "opacity-55 grayscale-[25%]" : "opacity-100"
       }`}
       style={style}
@@ -90,7 +90,7 @@ function GalleryFrame({
         fill
         sizes={sizes}
         className={`object-cover transition-transform duration-[1300ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform motion-reduce:transition-none ${frame.position} ${
-          isActive ? "scale-[1.12]" : "scale-100"
+          isActive ? "scale-[1.12]" : "scale-100 group-active:scale-[1.045]"
         }`}
         style={{
           transformOrigin: "var(--pointer-x, 50%) var(--pointer-y, 50%)",
@@ -191,7 +191,7 @@ export default function ScatteredGallery() {
 
   return (
     <section
-      className="relative h-[100svh] min-h-[680px] w-full overflow-hidden bg-neutral-950 text-white"
+      className="relative h-[92svh] min-h-[620px] w-full overflow-hidden bg-neutral-950 text-white md:h-[100svh] md:min-h-[680px]"
       aria-labelledby="editorial-gallery-title"
       onPointerLeave={() => setActiveIndex(null)}
     >
@@ -292,14 +292,14 @@ export default function ScatteredGallery() {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-8 bg-gradient-to-b from-black/55 to-transparent px-5 pb-20 pt-6 md:px-10 md:pt-9">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-8 bg-gradient-to-b from-black/55 to-transparent px-4 pb-20 pt-5 md:px-10 md:pt-9">
         <div>
           <p className="text-[9px] font-semibold uppercase tracking-[0.42em] text-white/75 md:text-[10px]">
             STRIP / Selected frames
           </p>
           <h2
             id="editorial-gallery-title"
-            className="mt-2 text-[4.5rem] font-normal leading-[0.8] tracking-[0.04em] md:text-[7rem] lg:text-[8.5rem]"
+            className="mt-2 text-[3.75rem] font-normal leading-[0.78] tracking-[0.035em] sm:text-[4.5rem] md:text-[7rem] lg:text-[8.5rem]"
             style={{ fontFamily: "var(--font-lookbook)" }}
           >
             MOVE FREELY.
@@ -310,6 +310,10 @@ export default function ScatteredGallery() {
           Hover a frame and watch the collection make room.
         </p>
       </div>
+
+      <p className="pointer-events-none absolute bottom-4 right-4 z-20 text-[9px] font-semibold uppercase tracking-[0.24em] text-white/80 md:hidden">
+        Tap a frame to shop
+      </p>
     </section>
   );
 }

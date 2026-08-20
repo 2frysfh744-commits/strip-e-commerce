@@ -34,11 +34,11 @@ export default function Navbar({ products }: NavbarProps) {
   return (
     <>
       <header className="fixed left-0 top-0 z-50 w-full border-b border-neutral-200 bg-white/95 text-neutral-950 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-8 md:py-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-3 md:px-8 md:py-6">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="flex h-9 w-9 items-center justify-center md:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-full transition active:bg-neutral-100 md:hidden"
             aria-label="Open menu"
           >
             <Menu size={22} />
@@ -67,15 +67,15 @@ export default function Navbar({ products }: NavbarProps) {
             <BrandLogo
               priority
               decorative
-              className="h-6 w-36 md:h-10 md:w-64"
+              className="h-6 w-28 sm:w-36 md:h-10 md:w-64"
             />
           </Link>
 
-          <div className="ml-auto flex items-center gap-5 md:gap-6">
+          <div className="ml-auto flex items-center md:gap-2">
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="cursor-pointer transition hover:text-neutral-600"
+              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full transition hover:text-neutral-600 active:bg-neutral-100"
               aria-label="Search products"
             >
               <Search size={20} />
@@ -84,7 +84,7 @@ export default function Navbar({ products }: NavbarProps) {
             <Link
               href="/account"
               aria-label="Customer account"
-              className="hidden transition hover:text-neutral-600 sm:block"
+              className="hidden h-11 w-11 items-center justify-center rounded-full transition hover:text-neutral-600 sm:flex"
             >
               <User size={20} />
             </Link>
@@ -92,7 +92,7 @@ export default function Navbar({ products }: NavbarProps) {
             <button
               type="button"
               onClick={() => setCartOpen(true)}
-              className="relative cursor-pointer"
+              className="relative flex h-11 w-11 cursor-pointer items-center justify-center rounded-full transition active:bg-neutral-100"
               aria-label="Open shopping bag"
             >
               <ShoppingBag

@@ -17,7 +17,7 @@ export default function ProductCard(product: ProductCardProps) {
   return (
     <Link
       href={`/shop/${slug}`}
-      className="group block cursor-pointer transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1"
+      className="group block touch-manipulation cursor-pointer transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 active:scale-[0.985]"
     >
       <div className="relative aspect-[3/4] overflow-hidden bg-[#f5f5f5]">
         <Image
@@ -25,22 +25,21 @@ export default function ProductCard(product: ProductCardProps) {
           alt={name}
           fill
           unoptimized={remoteImage}
-          className={`${
-            remoteImage ? "object-cover" : "object-cover"
-          } transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.045]`}
+          sizes="(max-width: 639px) 46vw, (max-width: 1023px) 31vw, 23vw"
+          className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.045] group-active:scale-[1.025]"
         />
         {soldOut ? (
-          <span className="absolute left-3 top-3 bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-950">
+          <span className="absolute left-2 top-2 bg-white px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-neutral-950 sm:left-3 sm:top-3 sm:px-3 sm:py-1.5 sm:text-[10px] sm:tracking-[0.16em]">
             Sold out
           </span>
         ) : null}
       </div>
 
-      <div className="mt-5">
-        <h3 className="text-sm font-semibold uppercase tracking-[0.1em]">
+      <div className="mt-3 sm:mt-5">
+        <h3 className="text-[11px] font-semibold uppercase leading-4 tracking-[0.08em] sm:text-sm sm:leading-normal sm:tracking-[0.1em]">
           {name}
         </h3>
-        <p className="mt-2 text-sm font-medium text-neutral-700">
+        <p className="mt-1.5 text-xs font-medium text-neutral-700 sm:mt-2 sm:text-sm">
           {price} MAD
         </p>
       </div>
