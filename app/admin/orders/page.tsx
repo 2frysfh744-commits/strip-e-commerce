@@ -134,6 +134,12 @@ export default async function AdminOrdersPage() {
 
           <div className="flex flex-wrap items-center gap-3">
   <Link
+    href="/admin/homepage"
+    className="border border-neutral-300 bg-white px-5 py-3 text-sm font-semibold transition hover:border-neutral-950"
+  >
+    Homepage images
+  </Link>
+  <Link
     href="/admin/products"
     className="border border-neutral-900 bg-neutral-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-700"
   >

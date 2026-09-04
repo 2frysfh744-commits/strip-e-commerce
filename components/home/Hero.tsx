@@ -2,16 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 import BrandLogo from "@/components/branding/BrandLogo";
+import { isRemoteImage } from "@/types/homepage";
 
-export default function Hero() {
+export default function Hero({ image }: { image: string }) {
   return (
     <section className="relative h-[100svh] min-h-[620px] w-full overflow-hidden bg-neutral-950 md:h-screen">
       <Image
-        src="/Hero.jpg"
+        src={image}
         alt="STRIP new collection"
         fill
         priority
         sizes="100vw"
+        unoptimized={isRemoteImage(image)}
         className="motion-hero object-cover object-center"
       />
 

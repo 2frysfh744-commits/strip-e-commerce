@@ -8,7 +8,9 @@ import {
   type PointerEvent,
 } from "react";
 
-const frames = [
+import { isRemoteImage } from "@/types/homepage";
+
+const frameTemplates = [
   {
     image: "/home/editorial/grey-half-zip-standing.png",
     alt: "Grey STRIP half-zip with dark denim",
@@ -41,10 +43,12 @@ const frames = [
   },
 ];
 
+type GalleryFrameData = (typeof frameTemplates)[number];
+
 type GalleryFrameProps = {
   activeIndex: number | null;
   className?: string;
-  frame: (typeof frames)[number];
+  frame: GalleryFrameData;
   index: number;
   onActivate: (index: number) => void;
   onPointerMove: (
@@ -89,6 +93,7 @@ function GalleryFrame({
         alt={frame.alt}
         fill
         sizes={sizes}
+        unoptimized={isRemoteImage(frame.image)}
         className={`object-cover transition-transform duration-[1300ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform motion-reduce:transition-none ${frame.position} ${
           isActive ? "scale-[1.12]" : "scale-100 group-active:scale-[1.045]"
         }`}
@@ -126,8 +131,12 @@ function GalleryFrame({
   );
 }
 
-export default function ScatteredGallery() {
+export default function ScatteredGallery({ images }: { images: string[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const frames = frameTemplates.map((frame, index) => ({
+    ...frame,
+    image: images[index] || frame.image,
+  }));
 
   const leftWidth =
     activeIndex === 0
