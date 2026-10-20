@@ -29,6 +29,7 @@ export default function Hero({ image }: { image: string }) {
             tone="white"
             decorative
             priority
+            sizes="(max-width: 639px) 276px, (max-width: 767px) 315px, 591px"
             className="h-10 w-56 sm:w-64 md:h-[4.5rem] md:w-[30rem]"
           />
         </h1>

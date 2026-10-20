@@ -67,6 +67,7 @@ export default function Navbar({ products }: NavbarProps) {
             <BrandLogo
               priority
               decorative
+              sizes="(max-width: 639px) 138px, (max-width: 767px) 178px, 315px"
               className="h-6 w-28 sm:w-36 md:h-10 md:w-64"
             />
           </Link>
