@@ -5,6 +5,7 @@ type BrandLogoProps = {
   className?: string;
   priority?: boolean;
   decorative?: boolean;
+  sizes?: string;
 };
 
 export default function BrandLogo({
@@ -12,6 +13,7 @@ export default function BrandLogo({
   className = "",
   priority = false,
   decorative = false,
+  sizes,
 }: BrandLogoProps) {
   return (
     <span
@@ -27,9 +29,11 @@ export default function BrandLogo({
             : "/branding/strip-wordmark-black.png"
         }
         alt=""
-        width={2000}
-        height={2000}
-        priority={priority}
+        width={1600}
+        height={1600}
+        loading={priority ? "eager" : undefined}
+        fetchPriority={priority ? "high" : undefined}
+        sizes={sizes}
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-1/2 h-auto w-[123%] max-w-none -translate-x-1/2 -translate-y-1/2 select-none"
       />
