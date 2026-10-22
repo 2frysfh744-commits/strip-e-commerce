@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { trackMetaEventWhenReady } from "@/lib/fbpixel";
 import { useCart } from "@/store/cart";
 import { isRemoteProductImage } from "@/types/product";
 
@@ -46,6 +47,7 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [savedDetailsLoaded, setSavedDetailsLoaded] = useState(false);
+  const checkoutTracked = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -102,6 +104,20 @@ export default function CheckoutPage() {
 
   const deliveryFee = subtotal >= 500 ? 0 : 30;
   const total = subtotal + deliveryFee;
+
+  useEffect(() => {
+    if (items.length === 0 || checkoutTracked.current) {
+      return;
+    }
+
+    return trackMetaEventWhenReady("InitiateCheckout", {
+      value: total,
+      currency: "MAD",
+      num_items: items.reduce((count, item) => count + item.quantity, 0),
+    }, undefined, () => {
+      checkoutTracked.current = true;
+    });
+  }, [items, total]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

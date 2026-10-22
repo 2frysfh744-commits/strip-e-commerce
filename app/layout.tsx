@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Dorsa, Manrope } from "next/font/google";
 
+import MetaPixel from "@/components/analytics/MetaPixel";
 import CartHydration from "@/components/ui/CartHydration";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
@@ -48,6 +49,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${bodyFont.variable} ${displayFont.variable} ${lookbookFont.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <MetaPixel />
         <CartHydration />
         <Navbar products={products} />
         {children}
