@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+import { trackMetaEvent, trackMetaEventWhenReady } from "@/lib/fbpixel";
 import { useCart } from "@/store/cart";
 import {
   getAvailableStock,
@@ -26,6 +27,22 @@ export default function ProductInfo({ product }: ProductInfoProps) {
     ? getAvailableStock(product, selectedSize)
     : 0;
   const maximumQuantity = Math.min(10, selectedStock);
+  const viewedProductId = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (viewedProductId.current === product.id) {
+      return;
+    }
+
+    return trackMetaEventWhenReady("ViewContent", {
+      content_ids: [String(product.id)],
+      content_type: "product",
+      value: product.price,
+      currency: "MAD",
+    }, undefined, () => {
+      viewedProductId.current = product.id;
+    });
+  }, [product.id, product.price]);
 
   return (
     <div className="flex flex-col justify-center">
@@ -128,7 +145,15 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       <button
         type="button"
         disabled={!selectedSize || selectedStock === 0}
-        onClick={() => addItem(product, selectedSize, quantity)}
+        onClick={() => {
+          addItem(product, selectedSize, quantity);
+          trackMetaEvent("AddToCart", {
+            content_ids: [String(product.id)],
+            content_type: "product",
+            value: product.price * quantity,
+            currency: "MAD",
+          });
+        }}
         className="mt-9 min-h-14 touch-manipulation bg-black px-4 py-4 text-sm uppercase tracking-[0.22em] text-white transition hover:bg-neutral-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-neutral-300 md:mt-12 md:tracking-[0.25em]"
       >
         {totalStock === 0 ? "Sold Out" : "Add To Cart"}

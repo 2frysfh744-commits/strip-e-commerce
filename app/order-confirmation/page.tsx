@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
 
+import MetaPixelPurchase from "@/components/analytics/MetaPixelPurchase";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
+
 type OrderConfirmationPageProps = {
   searchParams: Promise<{
     orderId?: string | string[];
@@ -20,9 +23,49 @@ export default async function OrderConfirmationPage({
     rawOrderId && /^\d+$/.test(rawOrderId)
       ? rawOrderId
       : null;
+  let purchase: {
+    orderId: number;
+    total: number;
+    contentIds: string[];
+  } | null = null;
+
+  if (orderNumber) {
+    const { data: order, error } = await supabaseAdmin
+      .from("orders")
+      .select("id, items, total")
+      .eq("id", Number(orderNumber))
+      .maybeSingle();
+
+    if (error) {
+      console.error("Unable to load the confirmed order for Meta Pixel:", error);
+    } else if (
+      order &&
+      typeof order.total === "number" &&
+      Number.isFinite(order.total) &&
+      Array.isArray(order.items)
+    ) {
+      const contentIds = order.items.flatMap((item: unknown) => {
+        if (typeof item !== "object" || item === null) {
+          return [];
+        }
+
+        const productId = (item as Record<string, unknown>).product_id;
+        return typeof productId === "number" ? [String(productId)] : [];
+      });
+
+      if (contentIds.length > 0) {
+        purchase = {
+          orderId: order.id,
+          total: order.total,
+          contentIds,
+        };
+      }
+    }
+  }
 
   return (
     <main className="flex flex-1 items-center justify-center px-5 py-20">
+      {purchase ? <MetaPixelPurchase {...purchase} /> : null}
       <div className="w-full max-w-xl text-center">
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-black text-white">
           <Check size={36} strokeWidth={1.5} />
